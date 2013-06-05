@@ -276,7 +276,7 @@
     addKeyboardEventListeners();
   }
 
-  function onDomReady() {
+  (function onDomReady() {
     var isDomReadyCallbackCalled = false,
       isDomReadyListenerAdded = false;
 
@@ -352,8 +352,6 @@
     }
 
     addDomReadyListener();
-  }
-
-  onDomReady();
+  }) ();
 }) (window);
 
