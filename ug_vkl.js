@@ -1,73 +1,69 @@
 (function (window) {
   'use strict';
 
-  var KEY_MAP = {},
+  var document = window.document,
+    KEY_CHAR_MAP = {},
     CTRL_KEY_LISTENERS = {}, 
-    LIST_ELEMENT_DELIMITER = ':',
-    document = window.document,
+    DELIMITER = ':',
+    inputMode = {}, // 0: Uyghur, 1: Latin
     addToAll = window.attachAll || false, 
     whitelist = window.bedit_allow || [],
-    blacklist = window.bedit_deny || [],
-    inputMode = {}; // 0: Uyghur, 1: Latin
+    blacklist = window.bedit_deny || [];
 
-  function getCharCode(ch) {
-    return ch.charCodeAt(0);
-  }
-
-  function getChar(ascii) {
-    return String.fromCharCode(ascii);
+  function getChar(code) {
+    return String.fromCharCode(code);
   }
 
   function initialize() {
     // ASCII -> Unicode of Uyghur characters
-    KEY_MAP[getCharCode('a')] = 0x06BE;
-    KEY_MAP[getCharCode('b')] = 0x0628;
-    KEY_MAP[getCharCode('c')] = 0x063A;
-    KEY_MAP[getCharCode('D')] = 0x0698;
-    KEY_MAP[getCharCode('d')] = 0x062F;
-    KEY_MAP[getCharCode('e')] = 0x06D0;
-    KEY_MAP[getCharCode('F')] = 0x0641;
-    KEY_MAP[getCharCode('f')] = 0x0627;
-    KEY_MAP[getCharCode('G')] = 0x06AF;
-    KEY_MAP[getCharCode('g')] = 0x06D5;
-    KEY_MAP[getCharCode('H')] = 0x062E;
-    KEY_MAP[getCharCode('h')] = 0x0649;
-    KEY_MAP[getCharCode('i')] = 0x06AD;
-    KEY_MAP[getCharCode('J')] = 0x062C;
-    KEY_MAP[getCharCode('j')] = 0x0642;
-    KEY_MAP[getCharCode('K')] = 0x06C6;
-    KEY_MAP[getCharCode('k')] = 0x0643;
-    KEY_MAP[getCharCode('l')] = 0x0644;
-    KEY_MAP[getCharCode('m')] = 0x0645;
-    KEY_MAP[getCharCode('n')] = 0x0646;
-    KEY_MAP[getCharCode('o')] = 0x0648;
-    KEY_MAP[getCharCode('p')] = 0x067E;
-    KEY_MAP[getCharCode('q')] = 0x0686;
-    KEY_MAP[getCharCode('r')] = 0x0631;
-    KEY_MAP[getCharCode('s')] = 0x0633;
-    KEY_MAP[getCharCode('t')] = 0x062A;
-    KEY_MAP[getCharCode('u')] = 0x06C7;
-    KEY_MAP[getCharCode('v')] = 0x06C8;
-    KEY_MAP[getCharCode('w')] = 0x06CB;
-    KEY_MAP[getCharCode('x')] = 0x0634;
-    KEY_MAP[getCharCode('y')] = 0x064A;
-    KEY_MAP[getCharCode('z')] = 0x0632;
-    KEY_MAP[getCharCode('/')] = 0x0626;
+    KEY_CHAR_MAP.a = getChar(0x06BE);
+    KEY_CHAR_MAP.b = getChar(0x0628);
+    KEY_CHAR_MAP.c = getChar(0x063A);
+    KEY_CHAR_MAP.D = getChar(0x0698);
+    KEY_CHAR_MAP.d = getChar(0x062F);
+    KEY_CHAR_MAP.e = getChar(0x06D0);
+    KEY_CHAR_MAP.F = getChar(0x0641);
+    KEY_CHAR_MAP.f = getChar(0x0627);
+    KEY_CHAR_MAP.G = getChar(0x06AF);
+    KEY_CHAR_MAP.g = getChar(0x06D5);
+    KEY_CHAR_MAP.H = getChar(0x062E);
+    KEY_CHAR_MAP.h = getChar(0x0649);
+    KEY_CHAR_MAP.i = getChar(0x06AD);
+    KEY_CHAR_MAP.J = getChar(0x062C);
+    KEY_CHAR_MAP.j = getChar(0x0642);
+    KEY_CHAR_MAP.K = getChar(0x06C6);
+    KEY_CHAR_MAP.k = getChar(0x0643);
+    KEY_CHAR_MAP.l = getChar(0x0644);
+    KEY_CHAR_MAP.m = getChar(0x0645);
+    KEY_CHAR_MAP.n = getChar(0x0646);
+    KEY_CHAR_MAP.o = getChar(0x0648);
+    KEY_CHAR_MAP.p = getChar(0x067E);
+    KEY_CHAR_MAP.q = getChar(0x0686);
+    KEY_CHAR_MAP.r = getChar(0x0631);
+    KEY_CHAR_MAP.s = getChar(0x0633);
+    KEY_CHAR_MAP.t = getChar(0x062A);
+    KEY_CHAR_MAP.u = getChar(0x06C7);
+    KEY_CHAR_MAP.v = getChar(0x06C8);
+    KEY_CHAR_MAP.w = getChar(0x06CB);
+    KEY_CHAR_MAP.x = getChar(0x0634);
+    KEY_CHAR_MAP.y = getChar(0x064A);
+    KEY_CHAR_MAP.z = getChar(0x0632);
 
     // Uyghur punctuation marks
-    KEY_MAP[getCharCode(';')] = 0x061B;
-    KEY_MAP[getCharCode('?')] = 0x061F;
-    KEY_MAP[getCharCode(',')] = 0x060C;
+    KEY_CHAR_MAP['/'] = getChar(0x0626);
+    KEY_CHAR_MAP[';'] = getChar(0x061B);
+    KEY_CHAR_MAP['?'] = getChar(0x061F);
+    KEY_CHAR_MAP[','] = getChar(0x060C);
 
     // Invert parentheses, brackets, and braces for RTL layout.
-    KEY_MAP[getCharCode('(')] = getCharCode(')');
-    KEY_MAP[getCharCode(')')] = getCharCode('(');
-    KEY_MAP[getCharCode('[')] = getCharCode(']');
-    KEY_MAP[getCharCode(']')] = getCharCode('[');
-    KEY_MAP[getCharCode('}')] = 0x00AB;
-    KEY_MAP[getCharCode('{')] = 0x00BB;
-    KEY_MAP[getCharCode('<')] = getCharCode('>'); // Sticking to the standard. 
-    KEY_MAP[getCharCode('>')] = getCharCode('<'); // Sticking to the standard.
+    KEY_CHAR_MAP['('] = ')';
+    KEY_CHAR_MAP[')'] = '(';
+    KEY_CHAR_MAP['['] = ']';
+    KEY_CHAR_MAP[']'] = '[';
+    KEY_CHAR_MAP['}'] = getChar(0x00AB);
+    KEY_CHAR_MAP['{'] = getChar(0x00BB);
+    KEY_CHAR_MAP['<'] = '>'; // Sticking to the standard. 
+    KEY_CHAR_MAP['>'] = '<'; // Sticking to the standard.
 
     CTRL_KEY_LISTENERS.K = toggleInputMode;
     // [Ctrl-T] can no longer be used for inverting the input direction in WebKit (Blink), see:
@@ -88,14 +84,14 @@
     element.style.direction = (element.style.direction === 'ltr' ? 'rtl' : 'ltr');
   }
 
-  function insert(element, text) {
+  function insert(element, ch) {
     var previousSelectionStart,
       currentSelectionStart,
       previousScrollTop,
       previousScrollLeft;
 
     if (document.selection && document.selection.createRange) { // Trident 5.0+
-      document.selection.createRange().text = text;
+      document.selection.createRange().text = ch;
     } else { // W3C 
       previousSelectionStart = element.selectionStart;
 
@@ -106,14 +102,14 @@
       }
 
       element.value = element.value.substring(0, element.selectionStart) +
-        text + element.value.substring(element.selectionEnd);
+        ch + element.value.substring(element.selectionEnd);
 
       if (previousScrollTop) {
         element.scrollTop = previousScrollTop;
         element.scrollLeft = previousScrollLeft;
       }
 
-      currentSelectionStart = previousSelectionStart + text.length;
+      currentSelectionStart = previousSelectionStart + ch.length;
       element.setSelectionRange(currentSelectionStart, currentSelectionStart);
     }
   }
@@ -142,18 +138,18 @@
       target = event.srcElement || event.target,
       isMetaKey = event.ctrlKey || event.metaKey,
       keyCode = event.keyCode || event.which,
-      c = getChar(keyCode).toUpperCase(),
-      isAlphabetic = /^[A-Z]{1}$/.test(c),
+      c = getChar(keyCode),
+      isAlphabetic = /^[A-Z]{1}$/.test(c.toUpperCase()),
       preventDefaultAndStopPropagation = false;
 
     // The extra check for the meta key ([Ctrl]) is because:
     //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496 
     if (!isMetaKey && inputMode[target.name] === 0) {
-      if (KEY_MAP[keyCode]) {
+      if (KEY_CHAR_MAP[c]) {
         if (event.keyCode && !event.which) { // Trident 4.0-
-          event.keyCode = KEY_MAP[keyCode];
+          event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
         } else {                             // W3C event is read-only.
-          insert(target, getChar(KEY_MAP[keyCode]));
+          insert(target, KEY_CHAR_MAP[c]);
         }
         preventDefaultAndStopPropagation = true;
       } else if (isAlphabetic) {
@@ -227,18 +223,18 @@
     if (!addToAll) {
       if (whitelist.length) {
         cancel = false;
-        whitelist = whitelist.split(LIST_ELEMENT_DELIMITER);
+        whitelist = whitelist.split(DELIMITER);
       }
 
       if (blacklist.length) {
         cancel = false;
         addToAll = true; // A blacklist by itself implies 'addToAll'.
-        blacklist = blacklist.split(LIST_ELEMENT_DELIMITER);
+        blacklist = blacklist.split(DELIMITER);
       }
     } else {
       if (blacklist.length) {
         cancel = false;
-        blacklist = blacklist.split(LIST_ELEMENT_DELIMITER);
+        blacklist = blacklist.split(DELIMITER);
       }
     }
 
