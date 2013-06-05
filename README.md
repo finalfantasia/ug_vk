@@ -14,7 +14,8 @@ This fork fixes a few issues that exist in the original version:
 * Removes the code for conversion between the obsolete Alkatip encoding and Unicode;
 * Removes most of the global variables (including `window.addchar` and `window.proc_kd`, but keeps `bedit_allow`, `bedit_deny`, and `attachAll` for backward-compatibility) by enclosing the the whole code in a function scope;
 * Removes the workaround to fix keyboard event issues with older versions of Opera;
-* Other code clean-ups.
+* Now each input element maintains its own input mode independently of other elements;
+* Code clean-ups.
 
 ## Usage
 

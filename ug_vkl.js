@@ -1,5 +1,14 @@
-!function (window) {
+(function (window) {
   'use strict';
+
+  var KEY_MAP = {},
+    CTRL_KEY_LISTENERS = {}, 
+    LIST_ELEMENT_DELIMITER = ':',
+    document = window.document,
+    addToAll = window.attachAll || false, 
+    whitelist = window.bedit_allow || [],
+    blacklist = window.bedit_deny || [],
+    inputMode = {}; // 0: Uyghur, 1: Latin
 
   function getCharCode(ch) {
     return ch.charCodeAt(0);
@@ -67,21 +76,23 @@
     CTRL_KEY_LISTENERS.Y = toggleInputDirection;
   }
 
-  function toggleInputMode() {
-    inputMode = 1 - inputMode;
+  function toggleInputMode(event) {
+    var element = event.srcElement || event.target;
+
+    inputMode[element.name] = 1 - inputMode[element.name];
   }
 
   function toggleInputDirection(event) {
-    var target = event.srcElement || event.target;
+    var element = event.srcElement || event.target;
 
-    target.style.direction = (target.style.direction === 'ltr' ? 'rtl' : 'ltr');
+    element.style.direction = (element.style.direction === 'ltr' ? 'rtl' : 'ltr');
   }
 
   function insert(element, text) {
-    var previousSelectionStart;
-    var currentSelectionStart;
-    var previousScrollTop;
-    var previousScrollLeft;
+    var previousSelectionStart,
+      currentSelectionStart,
+      previousScrollTop,
+      previousScrollLeft;
 
     if (document.selection && document.selection.createRange) { // Trident 5.0+
       document.selection.createRange().text = text;
@@ -108,10 +119,10 @@
   }
 
   function keydownListener(e) {
-    var event = e || window.event;
-    var isMetaKey = event.ctrlKey || event.metaKey;
-    var keyCode = event.keyCode || event.which;
-    var c = getChar(keyCode).toUpperCase();
+    var event = e || window.event,
+      isMetaKey = event.ctrlKey || event.metaKey,
+      keyCode = event.keyCode || event.which,
+      c = getChar(keyCode).toUpperCase();
 
     if (isMetaKey && CTRL_KEY_LISTENERS[c]) {
       CTRL_KEY_LISTENERS[c](event);
@@ -127,17 +138,17 @@
   }
 
   function keypressListener(e) {
-    var event = e || window.event;
-    var target = event.srcElement || event.target;
-    var isMetaKey = event.ctrlKey || event.metaKey;
-    var keyCode = event.keyCode || event.which;
-    var c = getChar(keyCode).toUpperCase();
-    var isAlphabetic = /^[A-Z]{1}$/.test(c);
-    var preventDefaultAndStopPropagation = false;
+    var event = e || window.event,
+      target = event.srcElement || event.target,
+      isMetaKey = event.ctrlKey || event.metaKey,
+      keyCode = event.keyCode || event.which,
+      c = getChar(keyCode).toUpperCase(),
+      isAlphabetic = /^[A-Z]{1}$/.test(c),
+      preventDefaultAndStopPropagation = false;
 
     // The extra check for the meta key ([Ctrl]) is because:
     //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496 
-    if (!isMetaKey && inputMode === 0) {
+    if (!isMetaKey && inputMode[target.name] === 0) {
       if (KEY_MAP[keyCode]) {
         if (event.keyCode && !event.which) { // Trident 4.0-
           event.keyCode = KEY_MAP[keyCode];
@@ -176,10 +187,10 @@
   }
 
   function getAllEditBoxes() {
-    var inputs;
-    var textAreas;
-    var all = [];
-    var i;
+    var inputs,
+      textAreas,
+      all = [],
+      i;
 
     inputs = document.getElementsByTagName('input');
     textAreas = document.getElementsByTagName('textarea');
@@ -207,10 +218,11 @@
     }
   }
 
-  function addEventListeners() {
-    var all;
-    var cancel = true;
-    var i;
+  function addKeyboardEventListeners() {
+    var all,
+      element,
+      cancel = true,
+      i;
 
     if (!addToAll) {
       if (whitelist.length) {
@@ -238,29 +250,40 @@
 
     if (addToAll) {
       for (i = 0; i < all.length; i++) {
-        if (indexOf(blacklist, all[i].name) < 0) {
-          addEventListener(all[i], 'keydown', keydownListener);
-          addEventListener(all[i], 'keypress', keypressListener);
+        element = all[i];
+
+        if (indexOf(blacklist, element.name) < 0) {
+          addEventListener(element, 'keydown', keydownListener);
+          addEventListener(element, 'keypress', keypressListener);
+
+          // Initialize the input mode for this element.
+          inputMode[element.name] = 0;
         }
       }
     } else {
       for (i = 0; i < all.length; i++) {
-        if (indexOf(whitelist, all[i].name) >= 0) {
-          addEventListener(all[i], 'keydown', keydownListener);
-          addEventListener(all[i], 'keypress', keypressListener);
+        element = all[i];
+
+        if (indexOf(whitelist, element.name) >= 0) {
+          addEventListener(element, 'keydown', keydownListener);
+          addEventListener(element, 'keypress', keypressListener);
+
+          // Initialize the input mode for this element.
+          inputMode[element.name] = 0;
         }
       }
     }
   }
 
   function load() {
-    console.log('Loading ug_vkl...');
     initialize();
-    addEventListeners();
-    loaded = true;
+    addKeyboardEventListeners();
   }
 
   function onDomReady() {
+    var isDomReadyCallbackCalled = false,
+      isDomReadyListenerAdded = false;
+
     function callDomReadyCallback() {
       if (!isDomReadyCallbackCalled) {
         if (!document.body) { // In case IE gets a little overzealous.
@@ -332,26 +355,9 @@
       }
     }
 
-    var isDomReadyCallbackCalled = false;
-    var isDomReadyListenerAdded = false;
-
     addDomReadyListener();
   }
 
-  var KEY_MAP = {};
-  var CTRL_KEY_LISTENERS = {}; 
-  var LIST_ELEMENT_DELIMITER = ':';
-
-  var document = window.document;
-  var addToAll = window.attachAll || false; 
-  var whitelist = window.bedit_allow || [];
-  var blacklist = window.bedit_deny || [];
-  var inputMode = 0; // 0: Uyghur, 1: Latin
-
-  // Using DOM Level 0 event model is discouraged.
-  // window.addchar = function (notUsed, event) { keypressListener(event); };
-  // window.proc_kd = keydownListener;
-
   onDomReady();
-} (window);
+}) (window);
 
