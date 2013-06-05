@@ -19,7 +19,7 @@ This fork fixes a few issues that exist in the original version:
 
 ## Usage
 
-Put a global script block at the bottom of your page right before `</body>` to specify the elements to which you want to add the virtual keyboard layout support, e.g.:
+Put a global script block at the bottom of your page right before `</body>` to specify the elements (by the values of their `name` attribute) to which you want to add the virtual keyboard layout support, e.g.:
 ```
 <html>
 ...
