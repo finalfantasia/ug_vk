@@ -16,52 +16,52 @@
 
   function initialize() {
     // ASCII -> Unicode of Uyghur characters
-    KEY_CHAR_MAP.a = getChar(0x06BE);
-    KEY_CHAR_MAP.b = getChar(0x0628);
-    KEY_CHAR_MAP.c = getChar(0x063A);
-    KEY_CHAR_MAP.D = getChar(0x0698);
-    KEY_CHAR_MAP.d = getChar(0x062F);
-    KEY_CHAR_MAP.e = getChar(0x06D0);
-    KEY_CHAR_MAP.F = getChar(0x0641);
-    KEY_CHAR_MAP.f = getChar(0x0627);
-    KEY_CHAR_MAP.G = getChar(0x06AF);
-    KEY_CHAR_MAP.g = getChar(0x06D5);
-    KEY_CHAR_MAP.H = getChar(0x062E);
-    KEY_CHAR_MAP.h = getChar(0x0649);
-    KEY_CHAR_MAP.i = getChar(0x06AD);
-    KEY_CHAR_MAP.J = getChar(0x062C);
-    KEY_CHAR_MAP.j = getChar(0x0642);
-    KEY_CHAR_MAP.K = getChar(0x06C6);
-    KEY_CHAR_MAP.k = getChar(0x0643);
-    KEY_CHAR_MAP.l = getChar(0x0644);
-    KEY_CHAR_MAP.m = getChar(0x0645);
-    KEY_CHAR_MAP.n = getChar(0x0646);
-    KEY_CHAR_MAP.o = getChar(0x0648);
-    KEY_CHAR_MAP.p = getChar(0x067E);
-    KEY_CHAR_MAP.q = getChar(0x0686);
-    KEY_CHAR_MAP.r = getChar(0x0631);
-    KEY_CHAR_MAP.s = getChar(0x0633);
-    KEY_CHAR_MAP.t = getChar(0x062A);
-    KEY_CHAR_MAP.u = getChar(0x06C7);
-    KEY_CHAR_MAP.v = getChar(0x06C8);
-    KEY_CHAR_MAP.w = getChar(0x06CB);
-    KEY_CHAR_MAP.x = getChar(0x0634);
-    KEY_CHAR_MAP.y = getChar(0x064A);
-    KEY_CHAR_MAP.z = getChar(0x0632);
+    KEY_CHAR_MAP.a = getChar(1726);
+    KEY_CHAR_MAP.b = getChar(1576);
+    KEY_CHAR_MAP.c = getChar(1594);
+    KEY_CHAR_MAP.D = getChar(1688);
+    KEY_CHAR_MAP.d = getChar(1583);
+    KEY_CHAR_MAP.e = getChar(1744);
+    KEY_CHAR_MAP.F = getChar(1601);
+    KEY_CHAR_MAP.f = getChar(1575);
+    KEY_CHAR_MAP.G = getChar(1711);
+    KEY_CHAR_MAP.g = getChar(1749);
+    KEY_CHAR_MAP.H = getChar(1582);
+    KEY_CHAR_MAP.h = getChar(1609);
+    KEY_CHAR_MAP.i = getChar(1709);
+    KEY_CHAR_MAP.J = getChar(1580);
+    KEY_CHAR_MAP.j = getChar(1602);
+    KEY_CHAR_MAP.K = getChar(1734);
+    KEY_CHAR_MAP.k = getChar(1603);
+    KEY_CHAR_MAP.l = getChar(1604);
+    KEY_CHAR_MAP.m = getChar(1605);
+    KEY_CHAR_MAP.n = getChar(1606);
+    KEY_CHAR_MAP.o = getChar(1608);
+    KEY_CHAR_MAP.p = getChar(1662);
+    KEY_CHAR_MAP.q = getChar(1670);
+    KEY_CHAR_MAP.r = getChar(1585);
+    KEY_CHAR_MAP.s = getChar(1587);
+    KEY_CHAR_MAP.t = getChar(1578);
+    KEY_CHAR_MAP.u = getChar(1735);
+    KEY_CHAR_MAP.v = getChar(1736);
+    KEY_CHAR_MAP.w = getChar(1739);
+    KEY_CHAR_MAP.x = getChar(1588);
+    KEY_CHAR_MAP.y = getChar(1610);
+    KEY_CHAR_MAP.z = getChar(1586);
 
     // Uyghur punctuation marks
-    KEY_CHAR_MAP['/'] = getChar(0x0626);
-    KEY_CHAR_MAP[';'] = getChar(0x061B);
-    KEY_CHAR_MAP['?'] = getChar(0x061F);
-    KEY_CHAR_MAP[','] = getChar(0x060C);
+    KEY_CHAR_MAP['/'] = getChar(1574);
+    KEY_CHAR_MAP[';'] = getChar(1563);
+    KEY_CHAR_MAP['?'] = getChar(1567);
+    KEY_CHAR_MAP[','] = getChar(1548);
 
     // Invert parentheses, brackets, and braces for RTL layout.
     KEY_CHAR_MAP['('] = ')';
     KEY_CHAR_MAP[')'] = '(';
     KEY_CHAR_MAP['['] = ']';
     KEY_CHAR_MAP[']'] = '[';
-    KEY_CHAR_MAP['}'] = getChar(0x00AB);
-    KEY_CHAR_MAP['{'] = getChar(0x00BB);
+    KEY_CHAR_MAP['}'] = getChar(171);
+    KEY_CHAR_MAP['{'] = getChar(187);
     KEY_CHAR_MAP['<'] = '>'; // Sticking to the standard. 
     KEY_CHAR_MAP['>'] = '<'; // Sticking to the standard.
 
