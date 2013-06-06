@@ -1,7 +1,7 @@
 ug_vkl
 ======
 
-A virtual keyboard layout for the Uyghur language written in JavaScript. This is an optimized and modernized fork of the original version ([bedit.js](http://www.yulghun.com/news/vkb.html)) written by Mr. Muhemmed Abdullah.
+A virtual keyboard layout for the Uyghur language written in JavaScript. This is an optimized and modernized fork of the original work ([bedit.js](http://www.yulghun.com/news/vkb.html)) written by Mr. Muhemmed Abdullah.
 
 ## What's New 
 
