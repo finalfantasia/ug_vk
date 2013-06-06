@@ -5,7 +5,7 @@ A virtual keyboard layout for the Uyghur language written in JavaScript. This is
 
 ## What's New 
 
-This fork fixes a few issues that exist in the original version:
+This fork fixes a few issues that exist in the original work:
 
 * Allows using Ctrl-Y, instead of Ctrl-T as it no longer works in Google Chrome 4+, to toggle typing direction;
 * Implements the right way of loading the script for IE 8- when DOM is ready;
