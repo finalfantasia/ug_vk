@@ -28,14 +28,14 @@ Put a global script block at the bottom of your page right before `</body>` to s
   <script type="text/javascript">
     // Add the virtual keyboard layout support to all the text input and textarea elements.
     // Note that this is optional if you defined bedit_deny.
-    attachAll = true;
+    var attachAll = true;
 
     // Blacklist the specified elements so that they won't be added the virtual keyboard layout support.
-    bedit_deny = "password:url:email";
+    var bedit_deny = "password:url:email";
    
     // You may use this option mutually exclusively with the options above
     // to explicitly specify only those elements which will be added the virtual keyboard layout support.
-    // bedit_allow = "name:comment:post"; 
+    // var bedit_allow = "name:comment:post"; 
   </script>
 </body>
 </html>
@@ -48,7 +48,7 @@ Put ug_vkl.js between the global script block above and `</body>`, e.g.:
 <body>
 ...
   <script type="text/javascript">
-    bedit_deny = "password:url:email";
+    var bedit_deny = "password:url:email";
   </script>
   <script src="http://www.yourwebsite.com/js/ug_vkl.js" type="text/javascript"></script>
 </body>
@@ -57,7 +57,7 @@ Put ug_vkl.js between the global script block above and `</body>`, e.g.:
 
 Alternatively, you may put the global variable definitions inside ug_vkl.js if you so choose, although not recommeded, e.g.:
 ```JavaScript
-bedit_deny = "password:url:email";
+var bedit_deny = "password:url:email";
 
 (function (window) {
   'use strict';
