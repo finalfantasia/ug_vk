@@ -20,7 +20,7 @@ This fork fixes a few issues that exist in the original work:
 ## Usage
 
 Put a global script block at the bottom of your page right before `</body>` to specify the elements (by the values of their `name` attribute) to which you want to add the virtual keyboard layout support, e.g.:
-```
+```HTML
 <html>
 ...
 <body>
@@ -42,7 +42,7 @@ Put a global script block at the bottom of your page right before `</body>` to s
 ```
 
 Put ug_vkl.js between the global script block above and `</body>`, e.g.:
-```
+```HTML
 <html>
 ...
 <body>
@@ -56,7 +56,7 @@ Put ug_vkl.js between the global script block above and `</body>`, e.g.:
 ```
 
 Alternatively, you may put the global variable definitions inside ug_vkl.js if you so choose, although not recommeded, e.g.:
-```
+```JavaScript
 bedit_deny = "password:url:email";
 
 (function (window) {
