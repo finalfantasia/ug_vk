@@ -3,34 +3,31 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
     <title>ug_vkl by finalfantasia</title>
   </head>
 
   <body>
-    <div id="container">
+    <header>
       <div class="inner">
+        <h1>ug_vkl</h1>
+        <h2>A virtual keyboard layout for the Uyghur language written in JavaScript.</h2>
+        <a href="https://github.com/finalfantasia/ug_vkl" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-        <header>
-          <h1>ug_vkl</h1>
-          <h2>A virtual keyboard layout for the Uyghur language written in JavaScript.</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/finalfantasia/ug_vkl/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/finalfantasia/ug_vkl/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/finalfantasia/ug_vkl" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
           <h1>
 <a name="ug_vkl" class="anchor" href="#ug_vkl"><span class="octicon octicon-link"></span></a>ug_vkl</h1>
 
@@ -56,57 +53,67 @@
 
 <p>Put a global script block at the bottom of your page right before <code>&lt;/body&gt;</code> to specify the elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard layout support, e.g.:</p>
 
-<pre><code>&lt;html&gt;
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
 ...
-&lt;body&gt;
+<span class="nt">&lt;body&gt;</span>
 ...
-  &lt;script type="text/javascript"&gt;
-    // Add the virtual keyboard layout support to all the text input and textarea elements.
-    // Note that this is optional if you defined bedit_deny.
-    attachAll = true;
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+    <span class="c1">// Add the virtual keyboard layout support to all the text input and textarea elements.</span>
+    <span class="c1">// Note that this is optional if you defined bedit_deny.</span>
+    <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-    // Blacklist the specified elements so that they won't be added the virtual keyboard layout support.
-    bedit_deny = "password:url:email";
+    <span class="c1">// Blacklist the specified elements so that they won't be added the virtual keyboard layout support.</span>
+    <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
 
-    // You may use this option mutually exclusively with the options above
-    // to explicitly specify only those elements which will be added the virtual keyboard layout support.
-    // bedit_allow = "name:comment:post"; 
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+    <span class="c1">// You may use this option mutually exclusively with the options above</span>
+    <span class="c1">// to explicitly specify only those elements which will be added the virtual keyboard layout support.</span>
+    <span class="c1">// bedit_allow = "name:comment:post"; </span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
 
 <p>Put ug_vkl.js between the global script block above and <code>&lt;/body&gt;</code>, e.g.:</p>
 
-<pre><code>&lt;html&gt;
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
 ...
-&lt;body&gt;
+<span class="nt">&lt;body&gt;</span>
 ...
-  &lt;script type="text/javascript"&gt;
-    bedit_deny = "password:url:email";
-  &lt;/script&gt;
-  &lt;script src="http://www.yourwebsite.com/js/ug_vkl.js" type="text/javascript"&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+    <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
+  <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://www.yourwebsite.com/js/ug_vkl.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
 
 <p>Alternatively, you may put the global variable definitions inside ug_vkl.js if you so choose, although not recommeded, e.g.:</p>
 
-<pre><code>bedit_deny = "password:url:email";
+<div class="highlight"><pre><span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
 
-(function (window) {
-  'use strict';
-...
-</code></pre>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">'use strict'</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
         </section>
 
-        <footer>
-          ug_vkl is maintained by <a href="https://github.com/finalfantasia">finalfantasia</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+        <aside id="sidebar">
+          <a href="https://github.com/finalfantasia/ug_vkl/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/finalfantasia/ug_vkl/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-        
+          <p class="repo-owner"><a href="https://github.com/finalfantasia/ug_vkl"></a> is maintained by <a href="https://github.com/finalfantasia">finalfantasia</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
       </div>
     </div>
+
+  
   </body>
 </html>
