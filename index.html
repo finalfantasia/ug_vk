@@ -66,11 +66,11 @@
     <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
     <span class="c1">// Blacklist the specified elements so that they won't be added the virtual keyboard layout support.</span>
-    <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
 
     <span class="c1">// You may use this option mutually exclusively with the options above</span>
     <span class="c1">// to explicitly specify only those elements which will be added the virtual keyboard layout support.</span>
-    <span class="c1">// var bedit_allow = "name:comment:post"; </span>
+    <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
   <span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
@@ -83,7 +83,7 @@
 <span class="nt">&lt;body&gt;</span>
 ...
   <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
-    <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
   <span class="nt">&lt;/script&gt;</span>
   <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://www.yourwebsite.com/js/ug_vkl.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
@@ -92,7 +92,7 @@
 
 <p>Alternatively, you may put the global variable definitions inside ug_vkl.js if you so choose, although not recommeded, e.g.:</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s2">"password:url:email"</span><span class="p">;</span>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
 
 <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
   <span class="s1">'use strict'</span><span class="p">;</span>
