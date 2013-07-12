@@ -50,6 +50,7 @@
 <li>Removes most of the global variables (including <code>window.addchar</code> and <code>window.proc_kd</code>, but keeps <code>bedit_allow</code>, <code>bedit_deny</code>, and <code>attachAll</code> for backward-compatibility) by enclosing the the whole code in a function scope;</li>
 <li>Removes the workaround to fix keyboard event issues with older versions of Opera;</li>
 <li>Now each input element maintains its own input mode independently of other elements;</li>
+<li>Automatically and conditionally prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant rendering engines only, e.g. Gecko, WebKit, and Blink);</li>
 <li>Code clean-ups.</li>
 </ul><h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
