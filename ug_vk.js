@@ -145,7 +145,7 @@
                 result = HAMZA + ch;
             } else {
                 // by using 'start' only, this if statement takes care of both cases of empty-selection and non-empty selection.
-                if ((!isArabicLetter(element.value[start - 1]) || isUyghurVowel(element.value[start - 1]))) {
+                if (!isArabicLetter(element.value[start - 1]) || isUyghurVowel(element.value[start - 1])) {
                     result = HAMZA + ch;
                 } else {
                     result = ch;
