@@ -15,6 +15,7 @@ This fork fixes a few issues that exist in the original work:
 * Removes most of the global variables (including `window.addchar` and `window.proc_kd`, but keeps `bedit_allow`, `bedit_deny`, and `attachAll` for backward-compatibility) by enclosing the the whole code in a function scope;
 * Removes the workaround to fix keyboard event issues with older versions of Opera;
 * Now each input element maintains its own input mode independently of other elements;
+* Automatically and conditionally prepends Hamza to Uyghur vowels based on their positions in text;
 * Code clean-ups.
 
 ## Usage
