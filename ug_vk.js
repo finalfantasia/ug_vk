@@ -138,14 +138,16 @@
 
     function prependHamzaConditionally(ch, element) {
         var result = ch,
-            start = element.selectionStart;
+            start = element.selectionStart,
+            previousChar;
 
         if (isUyghurVowel(ch)) {
             if (start === 0) { // cursor is at the begginning of the input area
                 result = HAMZA + ch;
             } else {
-                // by using 'start' only, this if statement takes care of both cases of empty-selection and non-empty selection.
-                if (!isArabicLetter(element.value[start - 1]) || isUyghurVowel(element.value[start - 1])) {
+                previousChar = element.value[start - 1];
+
+                if (!isArabicLetter(previousChar) || isUyghurVowel(previousChar)) {
                     result = HAMZA + ch;
                 } else {
                     result = ch;
