@@ -34,57 +34,57 @@
     }
 
     function initialize() {
-        // ASCII -> Unicode of Uyghur characters
-        KEY_CHAR_MAP = {};
+        // ASCII -> Unicode of Arabic/Uyghur characters
+        KEY_CHAR_MAP = {
+            a: getChar(0x06BE), // h
+            b: getChar(0x0628), // b
+            c: getChar(0x063A), // gh
+            D: getChar(0x0698), // zh
+            d: getChar(0x062F), // d
+            e: getChar(0x06D0), // :e
+            F: getChar(0x0641), // f
+            f: getChar(0x0627), // a
+            G: getChar(0x06AF), // g
+            g: getChar(0x06D5), // e
+            H: getChar(0x062E), // x
+            h: getChar(0x0649), // i
+            i: getChar(0x06AD), // ng
+            J: getChar(0x062C), // j
+            j: getChar(0x0642), // q
+            K: getChar(0x06C6), // :o
+            k: getChar(0x0643), // k
+            l: getChar(0x0644), // l
+            m: getChar(0x0645), // m
+            n: getChar(0x0646), // n
+            o: getChar(0x0648), // o
+            p: getChar(0x067E), // p
+            q: getChar(0x0686), // ch
+            r: getChar(0x0631), // r
+            s: getChar(0x0633), // s
+            t: getChar(0x062A), // t
+            u: getChar(0x06C7), // u
+            v: getChar(0x06C8), // :u
+            w: getChar(0x06CB), // w
+            x: getChar(0x0634), // sh
+            y: getChar(0x064A), // y
+            z: getChar(0x0632), // z
+            '/': getChar(0x0626), // hamza
 
-        KEY_CHAR_MAP.a    = getChar(0x06BE); // h
-        KEY_CHAR_MAP.b    = getChar(0x0628); // b
-        KEY_CHAR_MAP.c    = getChar(0x063A); // gh
-        KEY_CHAR_MAP.D    = getChar(0x0698); // zh
-        KEY_CHAR_MAP.d    = getChar(0x062F); // d
-        KEY_CHAR_MAP.e    = getChar(0x06D0); // :e
-        KEY_CHAR_MAP.F    = getChar(0x0641); // f
-        KEY_CHAR_MAP.f    = getChar(0x0627); // a
-        KEY_CHAR_MAP.G    = getChar(0x06AF); // g
-        KEY_CHAR_MAP.g    = getChar(0x06D5); // e
-        KEY_CHAR_MAP.H    = getChar(0x062E); // x
-        KEY_CHAR_MAP.h    = getChar(0x0649); // i
-        KEY_CHAR_MAP.i    = getChar(0x06AD); // ng
-        KEY_CHAR_MAP.J    = getChar(0x062C); // j
-        KEY_CHAR_MAP.j    = getChar(0x0642); // q
-        KEY_CHAR_MAP.K    = getChar(0x06C6); // :o
-        KEY_CHAR_MAP.k    = getChar(0x0643); // k
-        KEY_CHAR_MAP.l    = getChar(0x0644); // l
-        KEY_CHAR_MAP.m    = getChar(0x0645); // m
-        KEY_CHAR_MAP.n    = getChar(0x0646); // n
-        KEY_CHAR_MAP.o    = getChar(0x0648); // o
-        KEY_CHAR_MAP.p    = getChar(0x067E); // p
-        KEY_CHAR_MAP.q    = getChar(0x0686); // ch
-        KEY_CHAR_MAP.r    = getChar(0x0631); // r
-        KEY_CHAR_MAP.s    = getChar(0x0633); // s
-        KEY_CHAR_MAP.t    = getChar(0x062A); // t
-        KEY_CHAR_MAP.u    = getChar(0x06C7); // u
-        KEY_CHAR_MAP.v    = getChar(0x06C8); // :u
-        KEY_CHAR_MAP.w    = getChar(0x06CB); // w
-        KEY_CHAR_MAP.x    = getChar(0x0634); // sh
-        KEY_CHAR_MAP.y    = getChar(0x064A); // y
-        KEY_CHAR_MAP.z    = getChar(0x0632); // z
-        KEY_CHAR_MAP['/'] = getChar(0x0626); // hamza
+            // Arabic punctuation marks
+            ';': getChar(0x061B),
+            '?': getChar(0x061F),
+            ',': getChar(0x060C),
 
-        // Arabic punctuation marks
-        KEY_CHAR_MAP[';'] = getChar(0x061B);
-        KEY_CHAR_MAP['?'] = getChar(0x061F);
-        KEY_CHAR_MAP[','] = getChar(0x060C);
-
-        // Invert parentheses, square brackets, and curly braces for RTL layout.
-        KEY_CHAR_MAP['('] = ')';
-        KEY_CHAR_MAP[')'] = '(';
-        KEY_CHAR_MAP['['] = ']';
-        KEY_CHAR_MAP[']'] = '[';
-        KEY_CHAR_MAP['{'] = getChar(0x00BB);
-        KEY_CHAR_MAP['}'] = getChar(0x00AB);
-        KEY_CHAR_MAP['<'] = '>'; // Sticking to the standard.
-        KEY_CHAR_MAP['>'] = '<'; // Sticking to the standard.
+            // Invert parentheses, square brackets, and curly braces for RTL layout.
+            '(': ')',
+            ')': '(',
+            '[': ']',
+            ']': '[',
+            '{': getChar(0x00BB),
+            '}': getChar(0x00AB),
+            '<': '>', // Sticking to the standard.
+            '>': '<'  // Sticking to the standard.
+        };
 
         UYGHUR_VOWELS = [
             KEY_CHAR_MAP.f,
