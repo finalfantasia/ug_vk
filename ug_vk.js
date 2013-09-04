@@ -10,7 +10,7 @@
         HAMZA,
         CTRL_KEY_LISTENERS,
         DELIMITER = ':',
-        inputMode = {}, // 0: Uyghur, 1: Latin
+        keyboardMode = {}, // 0: Uyghur, 1: Latin
         addToAll = window.attachAll || false,
         whitelist = window.bedit_allow || [],
         blacklist = window.bedit_deny || [];
@@ -71,7 +71,7 @@
         KEY_CHAR_MAP.z    = getChar(0x0632); // z
         KEY_CHAR_MAP['/'] = getChar(0x0626); // hamza
 
-        // Uyghur punctuation marks
+        // Arabic punctuation marks
         KEY_CHAR_MAP[';'] = getChar(0x061B);
         KEY_CHAR_MAP['?'] = getChar(0x061F);
         KEY_CHAR_MAP[','] = getChar(0x060C);
@@ -81,8 +81,8 @@
         KEY_CHAR_MAP[')'] = '(';
         KEY_CHAR_MAP['['] = ']';
         KEY_CHAR_MAP[']'] = '[';
-        KEY_CHAR_MAP['}'] = getChar(0x00AB);
         KEY_CHAR_MAP['{'] = getChar(0x00BB);
+        KEY_CHAR_MAP['}'] = getChar(0x00AB);
         KEY_CHAR_MAP['<'] = '>'; // Sticking to the standard.
         KEY_CHAR_MAP['>'] = '<'; // Sticking to the standard.
 
@@ -107,20 +107,20 @@
 
         CTRL_KEY_LISTENERS = {};
 
-        CTRL_KEY_LISTENERS.K = toggleInputMode;
+        CTRL_KEY_LISTENERS.K = switchKeyboardMode;
         // [Ctrl-T] can no longer be used for inverting the input direction in WebKit (Blink), see:
         //   https://code.google.com/p/chromium/issues/detail?id=33056
-        // Therefore, use 'Y' ('Y' as in the Uyghur word 'Yönilish')
-        CTRL_KEY_LISTENERS.Y = toggleInputDirection;
+        // Therefore, use [Ctrl-Y] ('Y' as in the Uyghur word 'Yönilish')
+        CTRL_KEY_LISTENERS.Y = switchWritingDirection;
     }
 
-    function toggleInputMode(event) {
+    function switchKeyboardMode(event) {
         var element = event.srcElement || event.target;
 
-        inputMode[element.name] = 1 - inputMode[element.name];
+        keyboardMode[element.name] = 1 - keyboardMode[element.name];
     }
 
-    function toggleInputDirection(event) {
+    function switchWritingDirection(event) {
         var element = event.srcElement || event.target;
 
         element.style.direction = (element.style.direction === 'ltr' ? 'rtl' : 'ltr');
@@ -191,6 +191,65 @@
         }
     }
 
+    function addSwipeListener(el, listener) {
+        var startX, startY, dx, direction,
+            X_THRESHOLD = 50,
+            Y_THRESHOLD = 15;
+
+        function cancelTouch() {
+            el.removeEventListener('touchmove', onTouchMove);
+            el.removeEventListener('touchend', onTouchEnd);
+
+            startX = null;
+            startY = null;
+            dx = null;
+            direction = null;
+        }
+
+        function onTouchMove(e) {
+            var dy;
+
+            if (e.touches.length > 1) {
+                cancelTouch();
+            } else {
+                dx = e.touches[0].pageX - startX;
+                dy = e.touches[0].pageY - startY;
+
+                if ((direction && (direction < 0 && dx > 0) || (direction > 0 && dx < 0)) ||
+                    Math.abs(dy) > Y_THRESHOLD) {
+                    cancelTouch();
+                } else {
+                    direction = dx;
+                    e.preventDefault();
+                }
+
+            }
+        }
+
+        function onTouchEnd(e) {
+            var direction = (dx > 0 ? 'RIGHT' : 'LEFT'),
+                distance = Math.abs(dx);
+
+            cancelTouch();
+
+            if (distance > X_THRESHOLD) {
+                listener({ target: el, direction: direction });
+            }
+        }
+
+        function onTouchStart(e) {
+            if (e.touches.length === 1) {
+                startX = e.touches[0].pageX;
+                startY = e.touches[0].pageY;
+
+                el.addEventListener('touchmove', onTouchMove);
+                el.addEventListener('touchend', onTouchEnd);
+            }
+        }
+
+        el.addEventListener('touchstart', onTouchStart);
+    }
+
     function keydownListener(e) {
         var event = e || window.event,
             isMetaKey = event.ctrlKey || event.metaKey,
@@ -221,7 +280,7 @@
 
         // The extra check for the meta key ([Ctrl]) is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
-        if (!isMetaKey && inputMode[target.name] === 0) {
+        if (!isMetaKey && keyboardMode[target.name] === 0) {
             if (KEY_CHAR_MAP[c]) {
                 if (event.keyCode && !event.which) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
@@ -314,9 +373,10 @@
                 if (indexOf(blacklist, element.name) < 0) {
                     addEventListener(element, 'keydown', keydownListener);
                     addEventListener(element, 'keypress', keypressListener);
+                    addSwipeListener(element, switchKeyboardMode);
 
                     // Initialize the input mode for this element.
-                    inputMode[element.name] = 0;
+                    keyboardMode[element.name] = 0;
                 }
             }
         } else {
@@ -326,9 +386,10 @@
                 if (indexOf(whitelist, element.name) >= 0) {
                     addEventListener(element, 'keydown', keydownListener);
                     addEventListener(element, 'keypress', keypressListener);
+                    addSwipeListener(element, switchKeyboardMode);
 
                     // Initialize the input mode for this element.
-                    inputMode[element.name] = 0;
+                    keyboardMode[element.name] = 0;
                 }
             }
         }

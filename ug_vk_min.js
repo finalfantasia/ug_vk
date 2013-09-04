@@ -1,25 +1,28 @@
 !function(e){"use strict"
 function t(e){return String.fromCharCode(e)}function n(e,t){var n
 if(e&&e.length)for(n=0;n<e.length;n++)if(e[n]===t)return n
-return-1}function r(){m={},m.a=t(1726),m.b=t(1576),m.c=t(1594),m.D=t(1688),m.d=t(1583),m.e=t(1744),m.F=t(1601),m.f=t(1575),m.G=t(1711),m.g=t(1749),m.H=t(1582),m.h=t(1609),m.i=t(1709),m.J=t(1580),m.j=t(1602),m.K=t(1734),m.k=t(1603),m.l=t(1604),m.m=t(1605),m.n=t(1606),m.o=t(1608),m.p=t(1662),m.q=t(1670),m.r=t(1585),m.s=t(1587),m.t=t(1578),m.u=t(1735),m.v=t(1736),m.w=t(1739),m.x=t(1588),m.y=t(1610),m.z=t(1586),m["/"]=t(1574),m[";"]=t(1563),m["?"]=t(1567),m[","]=t(1548),m["("]=")",m[")"]="(",m["["]="]",m["]"]="[",m["}"]=t(171),m["{"]=t(187),m["<"]=">",m[">"]="<",p=[m.f,m.g,m.e,m.h,m.o,m.u,m.K,m.v],E=m["/"],y=[m[";"],m["?"],m[","]],C={},C.K=a,C.Y=o}function a(e){var t=e.srcElement||e.target
-S[t.name]=1-S[t.name]}function o(e){var t=e.srcElement||e.target
-t.style.direction="ltr"===t.style.direction?"rtl":"ltr"}function l(e){var t=e.charCodeAt(0)
-return t>=b&&w>t&&n(y,e)<0}function i(e){return l(e)&&n(p,e)>=0}function c(e,t){var n=e,r=t.selectionStart
-return i(e)&&(n=0===r?E+e:!l(t.value[r-1])||i(t.value[r-1])?E+e:e),n}function u(e,t){var n,r,a,o
-L.selection&&L.selection.createRange?L.selection.createRange().text=t:(n=e.selectionStart,"textarea"===e.type&&e.scrollTop&&(a=e.scrollTop,o=e.scrollLeft),t=c(t,e),e.value=e.value.substring(0,e.selectionStart)+t+e.value.substring(e.selectionEnd),a&&(e.scrollTop=a,e.scrollLeft=o),r=n+t.length,e.setSelectionRange(r,r))}function s(n){var r=n||e.event,a=r.ctrlKey||r.metaKey,o=r.keyCode||r.which,l=t(o).toUpperCase()
-a&&C[l]&&(C[l](r),r.preventDefault?(r.preventDefault(),r.stopPropagation()):(r.returnValue=!1,r.cancelBubble=!0))}function f(n){var r=n||e.event,a=r.srcElement||r.target,o=r.ctrlKey||r.metaKey,l=r.keyCode||r.which,i=t(l),c=/^[A-Z]{1}$/.test(i.toUpperCase()),s=!1
-o||0!==S[a.name]||(m[i]?(r.keyCode&&!r.which?r.keyCode=m[i].charCodeAt(0):u(a,m[i]),s=!0):c&&(r.returnValue=!1,s=!0)),s&&(r.preventDefault?(r.preventDefault(),r.stopPropagation()):r.cancelBubble=!0)}function d(){var e,t,n,r=[]
-for(e=L.getElementsByTagName("input"),t=L.getElementsByTagName("textarea"),n=0;n<e.length;n++)"text"===e[n].type.toLowerCase()&&r.push(e[n])
+return-1}function r(){p={},p.a=t(1726),p.b=t(1576),p.c=t(1594),p.D=t(1688),p.d=t(1583),p.e=t(1744),p.F=t(1601),p.f=t(1575),p.G=t(1711),p.g=t(1749),p.H=t(1582),p.h=t(1609),p.i=t(1709),p.J=t(1580),p.j=t(1602),p.K=t(1734),p.k=t(1603),p.l=t(1604),p.m=t(1605),p.n=t(1606),p.o=t(1608),p.p=t(1662),p.q=t(1670),p.r=t(1585),p.s=t(1587),p.t=t(1578),p.u=t(1735),p.v=t(1736),p.w=t(1739),p.x=t(1588),p.y=t(1610),p.z=t(1586),p["/"]=t(1574),p[";"]=t(1563),p["?"]=t(1567),p[","]=t(1548),p["("]=")",p[")"]="(",p["["]="]",p["]"]="[",p["{"]=t(187),p["}"]=t(171),p["<"]=">",p[">"]="<",E=[p.f,p.g,p.e,p.h,p.o,p.u,p.K,p.v],L=p["/"],y=[p[";"],p["?"],p[","]],C={},C.K=a,C.Y=o}function a(e){var t=e.srcElement||e.target
+D[t.name]=1-D[t.name]}function o(e){var t=e.srcElement||e.target
+t.style.direction="ltr"===t.style.direction?"rtl":"ltr"}function c(e){var t=e.charCodeAt(0)
+return t>=w&&k>t&&n(y,e)<0}function i(e){return c(e)&&n(E,e)>=0}function l(e,t){var n,r=e,a=t.selectionStart
+return i(e)&&(0===a?r=L+e:(n=t.value[a-1],r=!c(n)||i(n)?L+e:e)),r}function u(e,t){var n,r,a,o
+b.selection&&b.selection.createRange?b.selection.createRange().text=t:(n=e.selectionStart,"textarea"===e.type&&e.scrollTop&&(a=e.scrollTop,o=e.scrollLeft),t=l(t,e),e.value=e.value.substring(0,e.selectionStart)+t+e.value.substring(e.selectionEnd),a&&(e.scrollTop=a,e.scrollLeft=o),r=n+t.length,e.setSelectionRange(r,r))}function s(e,t){function n(){e.removeEventListener("touchmove",r),e.removeEventListener("touchend",a),c=null,i=null,l=null,u=null}function r(e){var t
+e.touches.length>1?n():(l=e.touches[0].pageX-c,t=e.touches[0].pageY-i,u&&0>u&&l>0||u>0&&0>l||Math.abs(t)>d?n():(u=l,e.preventDefault()))}function a(){var r=l>0?"RIGHT":"LEFT",a=Math.abs(l)
+n(),a>s&&t({target:e,direction:r})}function o(t){1===t.touches.length&&(c=t.touches[0].pageX,i=t.touches[0].pageY,e.addEventListener("touchmove",r),e.addEventListener("touchend",a))}var c,i,l,u,s=50,d=15
+e.addEventListener("touchstart",o)}function d(n){var r=n||e.event,a=r.ctrlKey||r.metaKey,o=r.keyCode||r.which,c=t(o).toUpperCase()
+a&&C[c]&&(C[c](r),r.preventDefault?(r.preventDefault(),r.stopPropagation()):(r.returnValue=!1,r.cancelBubble=!0))}function v(n){var r=n||e.event,a=r.srcElement||r.target,o=r.ctrlKey||r.metaKey,c=r.keyCode||r.which,i=t(c),l=/^[A-Z]{1}$/.test(i.toUpperCase()),s=!1
+o||0!==D[a.name]||(p[i]?(r.keyCode&&!r.which?r.keyCode=p[i].charCodeAt(0):u(a,p[i]),s=!0):l&&(r.returnValue=!1,s=!0)),s&&(r.preventDefault?(r.preventDefault(),r.stopPropagation()):r.cancelBubble=!0)}function f(){var e,t,n,r=[]
+for(e=b.getElementsByTagName("input"),t=b.getElementsByTagName("textarea"),n=0;n<e.length;n++)"text"===e[n].type.toLowerCase()&&r.push(e[n])
 for(n=0;n<t.length;n++)r.push(t[n])
-return r}function v(e,t,n){e.addEventListener?(e.removeEventListener(t,n,!1),e.addEventListener(t,n,!1)):e.attachEvent&&(e.detachEvent("on"+t,n),e.attachEvent("on"+t,n))}function h(){var e,t,r,a=!0
-if(D?T.length&&(a=!1,T=T.split(k)):(K.length&&(a=!1,K=K.split(k)),T.length&&(a=!1,D=!0,T=T.split(k))),!a)if(e=d(),D)for(r=0;r<e.length;r++)t=e[r],n(T,t.name)<0&&(v(t,"keydown",s),v(t,"keypress",f),S[t.name]=0)
-else for(r=0;r<e.length;r++)t=e[r],n(K,t.name)>=0&&(v(t,"keydown",s),v(t,"keypress",f),S[t.name]=0)}function g(){r(),h()}var m,p,y,E,C,L=e.document,b=1536,w=1791,k=":",S={},D=e.attachAll||!1,K=e.bedit_allow||[],T=e.bedit_deny||[]
-!function(){function t(){if(!o){if(!L.body)return setTimeout(t,1)
-o=!0,g()}}function n(){if(L.addEventListener)L.removeEventListener("DOMContentLoaded",n)
-else{if(!L.attachEvent)return
-L.detachEvent("onreadystatechange",n)}t()}function r(){if(!o){try{L.documentElement.doScroll("left")}catch(e){return setTimeout(r,1),void 0}t()}}function a(){var a=!1
-if(!l){if(l=!0,"loading"!==L.readyState)return t(),void 0
-if(L.addEventListener)L.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)
-else if(L.attachEvent){L.attachEvent("onreadystatechange",n),L.attachEvent("onload",n)
-try{a=!e.frameElement}catch(o){}L.documentElement.doScroll&&a&&r()}}}var o=!1,l=!1
+return r}function h(e,t,n){e.addEventListener?(e.removeEventListener(t,n,!1),e.addEventListener(t,n,!1)):e.attachEvent&&(e.detachEvent("on"+t,n),e.attachEvent("on"+t,n))}function g(){var e,t,r,o=!0
+if(S?x.length&&(o=!1,x=x.split(T)):(K.length&&(o=!1,K=K.split(T)),x.length&&(o=!1,S=!0,x=x.split(T))),!o)if(e=f(),S)for(r=0;r<e.length;r++)t=e[r],n(x,t.name)<0&&(h(t,"keydown",d),h(t,"keypress",v),s(t,a),D[t.name]=0)
+else for(r=0;r<e.length;r++)t=e[r],n(K,t.name)>=0&&(h(t,"keydown",d),h(t,"keypress",v),s(t,a),D[t.name]=0)}function m(){r(),g()}var p,E,y,L,C,b=e.document,w=1536,k=1791,T=":",D={},S=e.attachAll||!1,K=e.bedit_allow||[],x=e.bedit_deny||[]
+!function(){function t(){if(!o){if(!b.body)return setTimeout(t,1)
+o=!0,m()}}function n(){if(b.addEventListener)b.removeEventListener("DOMContentLoaded",n)
+else{if(!b.attachEvent)return
+b.detachEvent("onreadystatechange",n)}t()}function r(){if(!o){try{b.documentElement.doScroll("left")}catch(e){return setTimeout(r,1),void 0}t()}}function a(){var a=!1
+if(!c){if(c=!0,"loading"!==b.readyState)return t(),void 0
+if(b.addEventListener)b.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)
+else if(b.attachEvent){b.attachEvent("onreadystatechange",n),b.attachEvent("onload",n)
+try{a=!e.frameElement}catch(o){}b.documentElement.doScroll&&a&&r()}}}var o=!1,c=!1
 a()}()}(window)

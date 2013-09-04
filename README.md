@@ -7,15 +7,16 @@ A virtual keyboard for the Uyghur language written in JavaScript. This is an opt
 
 This fork fixes a few issues that exist in the original work:
 
-* Allows using Ctrl-Y, instead of Ctrl-T as it no longer works in Google Chrome 4+, to toggle typing direction;
+* Allows using [Ctrl-Y], instead of Ctrl-T as it no longer works in Google Chrome 4+, to switch writing direction;
 * Implements the right way of loading the script for IE 8- when DOM is ready;
 * Makes the virtual keyboard standard-compliant; 
 * Removes the code for conversion between UEY and ULY;
 * Removes the code for conversion between the obsolete Alkatip encoding and Unicode;
 * Removes most of the global variables (including `window.addchar` and `window.proc_kd`, but keeps `bedit_allow`, `bedit_deny`, and `attachAll` for backward-compatibility) by enclosing the the whole code in a function scope;
 * Removes the workaround to fix keyboard event issues with older versions of Opera;
-* Now each input element maintains its own input mode independently of other elements;
-* Automatically and conditionally prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant rendering engines only, e.g. Gecko, WebKit, and Blink);
+* Now each input element maintains its own keyboard mode independently of other elements;
+* Automatically prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant rendering engines only, e.g. Gecko, WebKit, and Blink);
+* Adds the ability to switch the keyboard mode via a horizontal swipe gesture in Safari for iOS;
 * Code clean-ups.
 
 ## Usage
