@@ -337,7 +337,7 @@
         }
     }
 
-    function addKeyboardEventListeners() {
+    function addEventListeners() {
         var all,
             element,
             cancel = true,
@@ -376,7 +376,7 @@
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
 
-                    // Initialize the input mode for this element.
+                    // Initialize the keyboard mode for this element.
                     keyboardMode[element.name] = 0;
                 }
             }
@@ -389,7 +389,7 @@
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
 
-                    // Initialize the input mode for this element.
+                    // Initialize the keyboard mode for this element.
                     keyboardMode[element.name] = 0;
                 }
             }
@@ -398,7 +398,7 @@
 
     function load() {
         initialize();
-        addKeyboardEventListeners();
+        addEventListeners();
     }
 
     (function onDomReady() {
