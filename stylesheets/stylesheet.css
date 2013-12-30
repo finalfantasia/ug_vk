@@ -2,6 +2,19 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+
+@font-face {
+    font-family: 'Alpida Unicode System';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/aus.eot');
+    src: local('Alpida Unicode System'),
+         url('fonts/aus.eot?#iefix') format('embedded-opentype'),
+         url('fonts/aus.woff') format('woff'),
+         url('fonts/aus.ttf') format('truetype'),
+         url('fonts/aus.svg') format('svg');
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -10,40 +23,40 @@ small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
+table, textarea, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /* LAYOUT STYLES */
@@ -128,6 +141,11 @@ aside#sidebar p.repo-owner a {
   margin-bottom: 40px;
 }
 
+textarea.demo {
+    direction: rtl;
+    font-family: 'Alpida Unicode System';
+}
+
 a.button {
   width: 134px;
   height: 58px;
@@ -200,7 +218,7 @@ hr {
   background: transparent url('../images/hr.png') 0 0 no-repeat;
 }
 
-table {
+table, textarea {
   width: 100%;
   border: 1px solid #ebebeb;
 }
