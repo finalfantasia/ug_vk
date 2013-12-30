@@ -355,8 +355,9 @@
                 blacklist = blacklist.split(DELIMITER);
             }
         } else {
+            cancel = false;
+
             if (blacklist.length) {
-                cancel = false;
                 blacklist = blacklist.split(DELIMITER);
             }
         }
