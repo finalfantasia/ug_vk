@@ -36,22 +36,27 @@
 <h2>
 <a name="whats-new" class="anchor" href="#whats-new"><span class="octicon octicon-link"></span></a>What's New</h2>
 
-<p>This fork fixes a few issues that exist in the original work:</p>
-
 <ul>
-<li>Allows using [Ctrl-Y], instead of Ctrl-T as it no longer works in Google Chrome 4+, to switch writing direction;</li>
-<li>Implements the right way of loading the script for IE 8- when DOM is ready;</li>
+<li>It's tiny (thus loads faster)! The minified/uglified version is only 4+ kiB! This is great for mobile devices!</li>
+<li>"Auto-magically" prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant rendering engines only, e.g. Gecko, WebKit, Blink, and the latest version of Trident, maybe);</li>
+<li>Adds the ability to switch the keyboard mode via a horizontal swipe gesture in Safari for iOS;</li>
+<li>Allows using [Ctrl-Y], instead of [Ctrl-T] as it no longer works in Google Chrome 4+, to switch writing direction;</li>
+<li>Now each input element maintains its own keyboard mode independently of other elements;</li>
 <li>Makes the virtual keyboard standard-compliant; </li>
+<li>Implements the right way of loading the script for IE 8- when DOM is ready, meaning more reliable!</li>
 <li>Removes the code for conversion between UEY and ULY;</li>
 <li>Removes the code for conversion between the obsolete Alkatip encoding and Unicode;</li>
 <li>Removes most of the global variables (including <code>window.addchar</code> and <code>window.proc_kd</code>, but keeps <code>bedit_allow</code>, <code>bedit_deny</code>, and <code>attachAll</code> for backward-compatibility) by enclosing the the whole code in a function scope;</li>
 <li>Removes the workaround to fix keyboard event issues with older versions of Opera;</li>
-<li>Now each input element maintains its own keyboard mode independently of other elements;</li>
-<li>Automatically prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant rendering engines only, e.g. Gecko, WebKit, and Blink);</li>
-<li>Adds the ability to switch the keyboard mode via a horizontal swipe gesture in Safari for iOS;</li>
 <li>Code clean-ups.</li>
+</ul><h2>Try it</h2><textarea name="try-it" class="try-it"></textarea>
+<ul>
+<li>Press [Ctrl-K] to switch the keyboard mode between Uyghur and English;</li>
+<li>Press [Ctrl-Y] to switch the writing direction between RTL and LTR;</li>
+<li>Try typing Uyghur words such as "ئالىم" ,"پائال" ,"ئاتا-ئانا" ,"نۇقتىئىينەزەر" ,"1-ئەزا" without using the [/] (ئ, hamza) key, this virtual keyboard "auto-magically" adds it for you whenever it "thinks" a hamza is necessary;</li>
+<li>If you're visiting this page on an iOS device, try swiping over the input box above horizontally to switch the keyboard layout between Uyghur and English;</li>
 </ul><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>How to Use</h2>
 
 <p>Put a global script block at the bottom of your page right before <code>&lt;/body&gt;</code> to specify the elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:</p>
 
@@ -96,7 +101,7 @@
 <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
   <span class="s1">'use strict'</span><span class="p">;</span>
 <span class="p">...</span>
-</pre></div><h2>Try it</h2><textarea name="try-it" class="try-it" placeholder="Try typing something in Uyghur and/or English here"></textarea>
+</pre></div>
         </section>
         <aside id="sidebar">
           <a href="https://github.com/finalfantasia/ug_vk/zipball/master" class="button">
