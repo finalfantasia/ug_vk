@@ -49,11 +49,11 @@
 <li>Removes most of the global variables (including <code>window.addchar</code> and <code>window.proc_kd</code>, but keeps <code>bedit_allow</code>, <code>bedit_deny</code>, and <code>attachAll</code> for backward-compatibility) by enclosing the the whole code in a function scope;</li>
 <li>Removes the workaround to fix keyboard event issues with older versions of Opera;</li>
 <li>Code clean-ups.</li>
-</ul><h2>Try it</h2><textarea name="try-it" class="try-it"></textarea>
+</ul><h2>Try it</h2><textarea name="try-it" lang="ug" class="try-it"></textarea>
 <ul>
 <li>Press [Ctrl-K] to switch the keyboard mode between Uyghur and English;</li>
 <li>Press [Ctrl-Y] to switch the writing direction between RTL and LTR;</li>
-<li>Try typing Uyghur words such as "ئالىم" ,"پائال" ,"ئاتا-ئانا" ,"نۇقتىئىينەزەر" ,"1-ئەزا" without using the [/] (ئ, hamza) key, this virtual keyboard "auto-magically" adds it for you whenever it "thinks" a hamza is necessary;</li>
+<li>Try typing Uyghur words such as <span class="bidi-override-ltr"><span lang="ug">ئالىم</span>, <span lang="ug">پائال</span>, <span lang="ug">ئاتا-ئانا</span>, <span lang="ug">نۇقتىئىينەزەر</span>,</span> and <span lang="ug">1-ئەزا</span> without using the [/] (ئ, hamza) key, this virtual keyboard "auto-magically" adds hamza for you whenever it "thinks" it's necessary;</li>
 <li>If you're visiting this page on an iOS device, try swiping over the input box above horizontally to switch the keyboard layout between Uyghur and English;</li>
 </ul><h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>How to Use</h2>
@@ -122,6 +122,6 @@
     <script type="text/javascript">
         var bedit_allow = 'try-it';
     </script>
-    <script src="ug_vk.min.js" type="text/javascript"></script>
+    <script src="ug_vk.js" type="text/javascript"></script>
   </body>
 </html>
