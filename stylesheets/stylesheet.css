@@ -10,9 +10,7 @@
     src: url('../fonts/aus.eot');
     src: local('Alpida Unicode System'),
          url('../fonts/aus.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/aus.woff') format('woff'),
-         url('../fonts/aus.ttf') format('truetype'),
-         url('../fonts/aus.svg') format('svg');
+         url('../fonts/aus.ttf') format('truetype');
 }
 
 html, body, div, span, applet, object, iframe,
