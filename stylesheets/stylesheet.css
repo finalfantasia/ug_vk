@@ -139,11 +139,6 @@ aside#sidebar p.repo-owner a {
   margin-bottom: 40px;
 }
 
-textarea.try-it {
-    direction: rtl;
-    font-family: 'Alpida Unicode System';
-}
-
 a.button {
   width: 134px;
   height: 58px;
