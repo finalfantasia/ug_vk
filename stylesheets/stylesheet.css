@@ -375,6 +375,7 @@ footer a:hover {
     unicode-bidi: embed;
     direction: rtl;
     font-family: 'Alpida Unicode System';
+    font-size: 13pt;
 }
 
 .bidi-override-ltr {
