@@ -80,7 +80,7 @@
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
-<p>Put ug_vk.js between the global script block above and <code>&lt;/body&gt;</code>, e.g.:</p>
+<p>Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the global script block above and <code>&lt;/body&gt;</code>, e.g.:</p>
 
 <div class="highlight highlight-HTML"><pre><span class="nt">&lt;html&gt;</span>
 ...
@@ -89,12 +89,12 @@
   <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
     <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
   <span class="nt">&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://www.yourwebsite.com/js/ug_vk.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://www.yourwebsite.com/js/ug_vk.min.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
-<p>Alternatively, you may put the global variable definitions inside ug_vk.js if you so choose, although not recommeded, e.g.:</p>
+<p>Alternatively, you may put the global variable declarations inside ug_vk.js (or ug_vk.min.js) if you so choose, although not recommeded, e.g.:</p>
 
 <div class="highlight highlight-JavaScript"><pre><span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
 
@@ -122,6 +122,6 @@
     <script type="text/javascript">
         var bedit_allow = 'try-it';
     </script>
-    <script src="ug_vk.js" type="text/javascript"></script>
+    <script src="ug_vk.min.js" type="text/javascript"></script>
   </body>
 </html>
