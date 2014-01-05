@@ -52,7 +52,7 @@
                     <li>Press [Ctrl-Y] to switch the writing direction between RTL and LTR;</li>
                 </ul>
                 <h2><a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>How to Use</h2>
-                <p>Put a global script block at the bottom of your page right before <code>&lt;/body&gt;</code> to specify the elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:</p>
+                <p>Put a <code>&lt;script&gt;</code> block at the bottom of your page right before <code>&lt;/body&gt;</code> to specify the elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:</p>
                 <div class="highlight highlight-HTML">
                     <pre>
 <span class="nt">&lt;html&gt;</span>
@@ -65,17 +65,19 @@
         <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
         <span class="c1">// Blacklist the specified elements so that they won't be added the virtual keyboard support.</span>
+        <span class="c1">// Use colons (:) to separate names.</span>
         <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
 
         <span class="c1">// You may use this option mutually exclusively with the options above</span>
         <span class="c1">// to explicitly specify only those elements which will be added the virtual keyboard support.</span>
+        <span class="c1">// Use colons (:) to separate names.</span>
         <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
     <span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
                     </pre>
                 </div>
-                <p>Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the global script block above and <code>&lt;/body&gt;</code>, e.g.:</p>
+                <p>Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the <code>&lt;script&gt;</code> block above and <code>&lt;/body&gt;</code>, e.g.:</p>
                 <div class="highlight highlight-HTML">
                     <pre>
 <span class="nt">&lt;html&gt;</span>

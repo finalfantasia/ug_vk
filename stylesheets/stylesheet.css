@@ -4,13 +4,12 @@
 */
 
 @font-face {
-    font-family: 'Alpida Unicode System';
-    font-style: normal;
-    font-weight: normal;
-    src: url('../fonts/aus.eot');
-    src: local('Alpida Unicode System'),
-         url('../fonts/aus.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/aus.ttf') format('truetype');
+    font-family: 'ALKATIP UI';
+    unicode-range: U+0626-06D5, U+FB56-FEFC;
+    src: url('../fonts/alkatip_ui.eot');
+    src: local('ALKATIP UI'),
+         url('../fonts/alkatip_ui.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/alkatip_ui.woff') format('woff');
 }
 
 html, body, div, span, applet, object, iframe,
@@ -369,8 +368,7 @@ footer a:hover {
 *:lang(ug) {
     unicode-bidi: embed;
     direction: rtl;
-    font-family: 'Alpida Unicode System';
-    font-size: 13pt;
+    font-family: 'ALKATIP UI', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
 }
 
 .bidi-override-ltr {
