@@ -1,25 +1,25 @@
 /*
     ug_vk.js (https://github.com/finalfantasia/ug_vk)
     The MIT License (MIT)
-    Copyright (c) 2013 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
+    Copyright (c) 2013, 2014 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
 */
 
 (function (window) {
     'use strict';
 
     var document = window.document,
-        KEY_CHAR_MAP,
         ARABIC_START = 0x0600, // Starting Unicode point of Arabic range
         ARABIC_END = 0x06FF,   // Ending Unicode point of Arabic range
+        NAME_DELIMITER = ':',
+        KEY_CHAR_MAP,
         UYGHUR_VOWELS,
         ARABIC_PUNCTUATION_MARKS,
         HAMZA,
         CTRL_KEY_LISTENERS,
-        DELIMITER = ':',
         keyboardMode = {}, // 0: Uyghur, 1: Latin
-        addToAll = window.attachAll || false,
-        whitelist = window.bedit_allow || [],
-        blacklist = window.bedit_deny || [];
+        addToAll = 'attachAll' in window ? !!attachAll : false,
+        whitelist = 'bedit_allow' in window ? bedit_allow : '',
+        blacklist = 'bedit_deny' in window ? bedit_deny : '';
 
     function indexOf(array, element) {
         var i;
@@ -167,12 +167,12 @@
             previousScrollTop,
             previousScrollLeft;
 
-        if (document.selection && document.selection.createRange) { // Trident 5.0+
+        if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
             document.selection.createRange().text = ch;
         } else { // W3C
             previousSelectionStart = element.selectionStart;
 
-            // Gecko scrolls to top in textarea after input, fix this.
+            // Gecko scrolls up to top in textarea after insertion.
             if (element.type === 'textarea' && element.scrollTop) {
                 previousScrollTop = element.scrollTop;
                 previousScrollLeft = element.scrollLeft;
@@ -194,14 +194,14 @@
         }
     }
 
-    function addSwipeListener(el, listener) {
+    function addSwipeListener(element, listener) {
         var startX, startY, dx, direction,
             X_THRESHOLD = 50,
             Y_THRESHOLD = 15;
 
         function cancelTouch() {
-            el.removeEventListener('touchmove', onTouchMove);
-            el.removeEventListener('touchend', onTouchEnd);
+            removeEventListener(element, 'touchmove', onTouchMove);
+            removeEventListener(element, 'touchend', onTouchEnd);
 
             startX = null;
             startY = null;
@@ -209,58 +209,57 @@
             direction = null;
         }
 
-        function onTouchMove(e) {
+        function onTouchMove(event) {
             var dy;
 
-            if (e.touches.length > 1) {
+            if (event.touches.length > 1) {
                 cancelTouch();
             } else {
-                dx = e.touches[0].pageX - startX;
-                dy = e.touches[0].pageY - startY;
+                dx = event.touches[0].pageX - startX;
+                dy = event.touches[0].pageY - startY;
 
                 if ((direction && (direction < 0 && dx > 0) || (direction > 0 && dx < 0)) ||
                     Math.abs(dy) > Y_THRESHOLD) {
                     cancelTouch();
                 } else {
                     direction = dx;
-                    e.preventDefault();
+                    event.preventDefault();
                 }
             }
         }
 
-        function onTouchEnd(e) {
+        function onTouchEnd(event) {
             var distance = Math.abs(dx);
 
             cancelTouch();
 
             if (distance > X_THRESHOLD) {
-                listener({ target: el, direction: (dx > 0 ? 'RIGHT' : 'LEFT') });
+                listener({ target: element, direction: (dx > 0 ? 'RIGHT' : 'LEFT') });
             }
         }
 
-        function onTouchStart(e) {
-            if (e.touches.length === 1) {
-                startX = e.touches[0].pageX;
-                startY = e.touches[0].pageY;
+        function onTouchStart(event) {
+            if (event.touches.length === 1) {
+                startX = event.touches[0].pageX;
+                startY = event.touches[0].pageY;
 
-                el.addEventListener('touchmove', onTouchMove);
-                el.addEventListener('touchend', onTouchEnd);
+                addEventListener(element, 'touchmove', onTouchMove);
+                addEventListener(element, 'touchend', onTouchEnd);
             }
         }
 
-        el.addEventListener('touchstart', onTouchStart);
+        addEventListener(element, 'touchstart', onTouchStart);
     }
 
     function keydownListener(e) {
         var event = e || window.event,
-            isMetaKey = event.ctrlKey || event.metaKey,
-            keyCode = event.keyCode || event.which,
-            c = String.fromCharCode(keyCode).toUpperCase();
+            charCode = 'which' in event ? event.which : event.keyCode,
+            c = String.fromCharCode(charCode).toUpperCase();
 
-        if (isMetaKey && CTRL_KEY_LISTENERS[c]) {
+        if (event.ctrlKey && c in CTRL_KEY_LISTENERS) {
             CTRL_KEY_LISTENERS[c](event);
 
-            if (event.preventDefault) {
+            if ('preventDefault' in event) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
@@ -272,20 +271,19 @@
 
     function keypressListener(e) {
         var event = e || window.event,
-            target = event.srcElement || event.target,
-            isMetaKey = event.ctrlKey || event.metaKey,
-            keyCode = event.keyCode || event.which,
-            c = String.fromCharCode(keyCode),
+            target = 'target' in event ? event.target : event.srcElement,
+            charCode = 'which' in event ? event.which : event.keyCode,
+            c = String.fromCharCode(charCode),
             isAlphabetic = /^[A-Z]{1}$/.test(c.toUpperCase()),
             preventDefaultAndStopPropagation = false;
 
-        // The extra check for the meta key ([Ctrl]) is because:
+        // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
-        if (!isMetaKey && keyboardMode[target.name] === 0) {
-            if (KEY_CHAR_MAP[c]) {
-                if (event.keyCode && !event.which) { // Trident 4.0-
+        if (!event.ctrlKey && keyboardMode[target.name] === 0) {
+            if (c in KEY_CHAR_MAP) {
+                if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
-                } else {                             // W3C event is read-only.
+                } else {                             // W3C
                     insert(target, KEY_CHAR_MAP[c]);
                 }
                 preventDefaultAndStopPropagation = true;
@@ -296,16 +294,16 @@
         }
 
         if (preventDefaultAndStopPropagation) {
-            if (event.preventDefault) {
+            if ('preventDefault' in event) { // W3C
                 event.preventDefault();
                 event.stopPropagation();
-            } else {
+            } else {                        // Trident 4.0-
                 event.cancelBubble = true;
             }
         }
     }
 
-    function getAllEditBoxes() {
+    function getAllInputBoxes() {
         var inputs,
             textAreas,
             all = [],
@@ -327,11 +325,19 @@
         return all;
     }
 
+    function removeEventListener(element, event, listener) {
+        if ('removeEventListener' in element) { // W3C
+            element.removeEventListener(event, listener, false);
+        } else if ('detachEvent' in element) {  // Trident 4.0-
+            element.detachEvent('on' + event, listener);
+        }
+    }
+
     function addEventListener(element, event, listener) {
-        if (element.addEventListener) { // W3C
+        if ('addEventListener' in element) {    // W3C
             element.removeEventListener(event, listener, false);
             element.addEventListener(event, listener, false);
-        } else if (element.attachEvent) { // Trident 4.0-
+        } else if ('attachEvent' in element) {  // Trident 4.0-
             element.detachEvent('on' + event, listener);
             element.attachEvent('on' + event, listener);
         }
@@ -346,19 +352,19 @@
         if (!addToAll) {
             if (whitelist.length) {
                 cancel = false;
-                whitelist = whitelist.split(DELIMITER);
+                whitelist = whitelist.split(NAME_DELIMITER);
             }
 
             if (blacklist.length) {
                 cancel = false;
                 addToAll = true; // A blacklist by itself implies 'addToAll'.
-                blacklist = blacklist.split(DELIMITER);
+                blacklist = blacklist.split(NAME_DELIMITER);
             }
         } else {
             cancel = false;
 
             if (blacklist.length) {
-                blacklist = blacklist.split(DELIMITER);
+                blacklist = blacklist.split(NAME_DELIMITER);
             }
         }
 
@@ -366,7 +372,7 @@
             return;
         }
 
-        all = getAllEditBoxes();
+        all = getAllInputBoxes();
 
         if (addToAll) {
             for (i = 0; i < all.length; i++) {
@@ -377,7 +383,6 @@
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
 
-                    // Initialize the keyboard mode for this element.
                     keyboardMode[element.name] = 0;
                 }
             }
@@ -390,7 +395,6 @@
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
 
-                    // Initialize the keyboard mode for this element.
                     keyboardMode[element.name] = 0;
                 }
             }
@@ -408,7 +412,7 @@
 
         function callDomReadyCallback() {
             if (!isDomReadyCallbackCalled) {
-                if (!document.body) { // In case IE gets a little overzealous.
+                if (!('body' in document)) { // In case IE gets a little overzealous.
                     return setTimeout(callDomReadyCallback, 1);
                 }
 
@@ -418,9 +422,9 @@
         }
 
         function domReadyListener() {
-            if (document.addEventListener) {
-                document.removeEventListener('DOMContentLoaded', domReadyListener);
-            } else if (document.attachEvent) {
+            if ('removeEventListener' in document) {    // W3C
+                document.removeEventListener('DOMContentLoaded', domReadyListener, false);
+            } else if ('detachEvent' in document) {     // Trident 4.0-
                 // Execution gets here only when document.readyState !== 'loading'
                 document.detachEvent('onreadystatechange', domReadyListener);
             } else {
@@ -459,10 +463,10 @@
                 return;
             }
 
-            if (document.addEventListener) {
+            if ('addEventListener' in document) {   // W3C
                 document.addEventListener('DOMContentLoaded', domReadyListener, false);
                 window.addEventListener('load', domReadyListener, false); // Fallback.
-            } else if (document.attachEvent) {
+            } else if ('attachEvent' in document) { // Trident 4.0-
                 document.attachEvent('onreadystatechange', domReadyListener);
                 document.attachEvent('onload', domReadyListener); // Fallback.
 
@@ -471,7 +475,7 @@
                     isTopLevel = !window.frameElement;
                 } catch (e) {}
 
-                if (document.documentElement.doScroll && isTopLevel) {
+                if ('doScroll' in document.documentElement && isTopLevel) {
                     ieScrollCheck();
                 }
             }
