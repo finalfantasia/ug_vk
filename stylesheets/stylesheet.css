@@ -168,7 +168,7 @@ aside a.button {
 }
 
 code, pre {
-  font-family: Monaco, Consolas, monospace;
+  font-family: Menlo, Roboto, Consolas, 'DejaVu Sans Mono', monospace;
   color: #222;
   margin-bottom: 30px;
   font-size: 13px;
