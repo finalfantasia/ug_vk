@@ -48,17 +48,11 @@ var l10n = {
                 definition: '// Add the virtual keyboard support to all the text input and textarea elements.',
                 comment: '// Note that this is optional if you defined bedit_deny.'
             },
-            bedit_deny: {
-                definition: '// Blacklist the specified elements so that they won\'t be added the virtual keyboard support.',
-                comment: ''
-            },
-            bedit_allow: {
-                definition: '// You may use this option mutually exclusively with the options above to explicitly specify only those elements which will be added the virtual keyboard support.',
-                comment: '// Use colons (:) to separate names.'
-            },
+            bedit_deny: '// Blacklist the specified elements so that they won\'t be added the virtual keyboard support.',
+            bedit_allow: '// You may use this option mutually exclusively with the options above to explicitly specify only those elements which will be added the virtual keyboard support.',
             ug_vkInclusion: {
-                recommendedWay: 'Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the <code>&lt;script&gt;</code> block above and <code>&lt;/body&gt;</code>, e.g.:',
-                alternativeWay: 'Alternatively, you may put the global variable declarations inside ug_vk.js (or ug_vk.min.js) if you so choose, although not recommeded, e.g.:'
+                recommended: 'Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the <code>&lt;script&gt;</code> block above and <code>&lt;/body&gt;</code>, e.g.:',
+                alternative: 'Alternatively, you may put the global variable declarations inside ug_vk.js (or ug_vk.min.js) if you so choose, although not recommeded, e.g.:'
             }
        }
     }
