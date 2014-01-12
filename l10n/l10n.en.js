@@ -16,7 +16,7 @@ var l10n = {
     whatsNew: {
         title: 'What\'s New',
         features: [
-            'It\'s tiny (thus transfers and loads faster)! The uglified/minified/gzipped version is only 1981 bytes!',
+            'It\'s tiny (thus transfers and loads faster)! The uglified/minified/gzipped version is only 2002 bytes!',
             '"Auto-magically" prepends Hamza to Uyghur vowels based on their positions in text (W3C standard-compliant layout engines only, e.g. Gecko, WebKit, Blink, and Trident 7.0+);',
             'Adds the ability to switch the keyboard mode via a horizontal swipe gesture in browsers on iOS and Android;',
             'Allows using [Ctrl-Y] ([Command-Y] on Mac), along with [Ctrl-T] ([Command-T] on Mac) as it no longer works in Google Chrome 4+, to switch the writing direction in the browsers where [Ctrl-T] (New Tab) is a browser-reserved shortcut;',
