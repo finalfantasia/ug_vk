@@ -412,7 +412,7 @@
         addEventListeners();
     }
 
-    (function onDomReady() {
+    function onDomReady(domReadyCallback) {
         var isDomReadyCallbackCalled = false,
             isDomReadyListenerAdded = false;
 
@@ -423,7 +423,7 @@
                 }
 
                 isDomReadyCallbackCalled = true;
-                load();
+                domReadyCallback();
             }
         }
 
@@ -488,6 +488,8 @@
         }
 
         addDomReadyListener();
-    }) ();
+    }
+
+    onDomReady(load);
 }) (window);
 
