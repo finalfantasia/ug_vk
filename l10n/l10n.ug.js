@@ -8,8 +8,8 @@ var l10n = {
         viewProject: 'تۈر تور بېتى',
         download: 'چۈشۈر',
         fileType: {
-            zip: 'zip ھۆججىتى',
-            tar_gz: '.tar.gz ھۆججىتى'
+            zip: 'zip ھۆججەت',
+            tar_gz: '.tar.gz ھۆججەت'
         },
         maintainedBy: 'تۈر ئاسرىغۇچىسى'
     },
@@ -40,13 +40,13 @@ var l10n = {
         title: 'ئىشلىتىش ئۇسۇلى',
         instructions: {
             varDeclarations: 'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (attachAll, bedit_allow, bedit_deny) گە ئېنىقلىما بېرىسىز، مەسىلەن:',
-            separateUsingColon: '// Herqaysi "input" we "textarea" elementlirining "name" xasliqlirining qimmitini ayrishta qosh chekit (:) ishliting.',
+            separateUsingColon: '// Herqaysi element <code>name</code> xasliqining qimmitini ayrishta qosh chekit (:) ishliting.',
             attachAll: {
-                definition: '// Bu ozgerguchining qimmiti "true" bolsa, mezkur kunupka taxtisi nowettiki tor bettiki hemme "input" we "textarea" elementlirige esilidu.',
-                comment: '// Diqqet, eger "bedit_deny" ni ishletken bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
+                definition: '// Bu ozgerguchining qimmiti <code>true</code> bolsa, mezkur kunupka taxtisi nowettiki tor bettiki hemme <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirige esilidu.',
+                comment: '// Diqqet, eger <code>bedit_deny</code> ni ishletken bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
             },
-            bedit_deny: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilmaydighan "input" we "textarea" elementlirini korsitip berisiz.',
-            bedit_allow: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilidighan "input" we "textarea" elementlirini korsitip berisiz.',
+            bedit_deny: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilmaydighan <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirini ularning <code>name</code> xasliqining qimmiti arqiliq belgilep berisiz.',
+            bedit_allow: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilidighan <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirini ularning <code>name</code> xasliqining qimmiti arqiliq belgilep berisiz.',
             ug_vkInclusion: 'يۇقىرىدىكى <code>&lt;script&gt;</code> بەلگىسىدىن كېيىن، يەنە بىر دانە <code>&lt;script&gt;</code> بەلگىسىنى يېزىش ئارقىلىق ug_vk.js ياكى ئۇنىڭ ھەجىمى كىچكرەك نۇسخىسى، ug_vk.min.js، نى قوشىسىز، مەسىلەن:'
        }
     }

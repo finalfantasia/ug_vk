@@ -42,15 +42,15 @@ var l10n = {
     howToUse: {
         title: 'How to Use',
         instructions: {
-            varDeclarations: 'Put a <code>&lt;script&gt;</code> block at the bottom of your page right before <code>&lt;/body&gt;</code> to specify the elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:',
-            separateUsingColon: '// Use colons (:) to separate names.',
+            varDeclarations: 'Put a <code>&lt;script&gt;</code> block anywhere between <code>&lt;head&gt;</code> and <code>&lt;/head&gt;</code> to specify the <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:',
+            separateUsingColon: '// Use colons (:) to separate element names.',
             attachAll: {
-                definition: '// Add the virtual keyboard support to all the text input and textarea elements.',
-                comment: '// Note that this is optional if you defined bedit_deny.'
+                definition: '// Add the virtual keyboard support to all &lt;input&gt; and &lt;textarea&gt; elements.',
+                comment: '// Note that this is optional if you defined "bedit_deny".'
             },
-            bedit_deny: '// Blacklist the specified elements so that they won\'t be added the virtual keyboard support.',
-            bedit_allow: '// You may use this option mutually exclusively with the options above to explicitly specify only those elements which will be added the virtual keyboard support.',
-            ug_vkInclusion: 'Put ug_vk.js or the uglified/minimized version ug_vk.min.js between the <code>&lt;script&gt;</code> block above and <code>&lt;/body&gt;</code>, e.g.:',
+            bedit_deny: '// Blacklist the specified &lt;input&gt; and &lt;textarea&gt; elements so that they won\'t be added the virtual keyboard support.',
+            bedit_allow: '// You may use this option mutually exclusively with the options above to explicitly specify only those &lt;input&gt; and &lt;textarea&gt; elements which will be added the virtual keyboard support.',
+            ug_vkInclusion: 'Put ug_vk.js or the uglified/minimized version ug_vk.min.js following the <code>&lt;script&gt;</code> block above, e.g.:',
        }
     }
 };
