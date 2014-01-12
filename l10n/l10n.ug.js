@@ -39,7 +39,7 @@ var l10n = {
     howToUse: {
         title: 'ئىشلىتىش ئۇسۇلى',
         instructions: {
-            varDeclarations: 'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (attachAll, bedit_allow, bedit_deny) گە ئېنىقلىما بېرىسىز، مەسىلەن:',
+            varDeclarations: 'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (attachAll, bedit_allow, bedit_deny) گە ئېنىقلىما بېرىسىز. تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ يەرگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ، نورمال ئىشلەۋېرىدۇ)، مەسىلەن:',
             separateUsingColon: '// Herqaysi element <code>name</code> xasliqining qimmitini ayrishta qosh chekit (:) ishliting.',
             attachAll: {
                 definition: '// Bu ozgerguchining qimmiti <code>true</code> bolsa, mezkur kunupka taxtisi nowettiki tor bettiki hemme <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirige esilidu.',
