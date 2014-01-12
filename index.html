@@ -50,6 +50,7 @@
                         <% }); %>
                     </ul>
                     <h2><a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a><%= howToUse.title %></h2>
+                    <h3><%= howToUse.instructions.step1 %></h3>
                     <p><%= howToUse.instructions.varDeclarations %></p>
                     <div class="highlight highlight-HTML">
                         <pre>
@@ -57,15 +58,12 @@
 <span class="nt">&lt;head&gt;</span>
 ...
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
-        <span class="c1"><%= howToUse.instructions.attachAll.definition %></span>
         <span class="c1"><%= howToUse.instructions.attachAll.comment %></span>
         <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-        <span class="c1"><%= howToUse.instructions.bedit_deny %></span>
         <span class="c1"><%= howToUse.instructions.separateUsingColon %></span>
         <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
 
-        <span class="c1"><%= howToUse.instructions.bedit_allow %></span>
         <span class="c1"><%= howToUse.instructions.separateUsingColon %></span>
         <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
     <span class="nt">&lt;/script&gt;</span>
@@ -74,8 +72,14 @@
 <span class="nt">&lt;body&gt;</span>
 ...
 <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span></pre>
-                </div>
+<span class="nt">&lt;/html&gt;</span></pre></div>
+                <p><%= howToUse.instructions.varExplanations %></p>
+                <ul>
+                    <li><code>attachAll</code>: <%= howToUse.instructions.attachAll.definition %></li>
+                    <li><code>bedit_allow</code>: <%= howToUse.instructions.bedit_allow %></li>
+                    <li><code>bedit_deny</code>: <%= howToUse.instructions.bedit_deny %></li>
+                </ul>
+                <h3><%= howToUse.instructions.step2 %></h3>
                 <p><%= howToUse.instructions.ug_vkInclusion %></p>
                 <div class="highlight highlight-HTML">
                     <pre>

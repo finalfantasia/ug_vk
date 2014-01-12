@@ -42,14 +42,17 @@ var l10n = {
     howToUse: {
         title: 'How to Use',
         instructions: {
+            step1: 'Step 1',
+            step2: 'Step 2',
             varDeclarations: 'Put a <code>&lt;script&gt;</code> block anywhere between <code>&lt;head&gt;</code> and <code>&lt;/head&gt;</code> to specify the <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements (by the values of their <code>name</code> attribute) to which you want to add the virtual keyboard support, e.g.:',
+            varExplanations: 'The definitions of the variables in the code snippet above: ',
             separateUsingColon: '// Use colons (:) to separate element names.',
             attachAll: {
-                definition: '// Add the virtual keyboard support to all &lt;input&gt; and &lt;textarea&gt; elements.',
-                comment: '// Note that this is optional if you defined "bedit_deny".'
+                definition: 'When <code>true</code>, adds the virtual keyboard support to all <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements in the current page.',
+                comment: '// Note that this is optional if you define <code>bedit_deny</code>.'
             },
-            bedit_deny: '// Blacklist the specified &lt;input&gt; and &lt;textarea&gt; elements so that they won\'t be added the virtual keyboard support.',
-            bedit_allow: '// You may use this option mutually exclusively with the options above to explicitly specify only those &lt;input&gt; and &lt;textarea&gt; elements which will be added the virtual keyboard support.',
+            bedit_deny: 'Exclude the specified <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements in the current page so that they won\'t be added the virtual keyboard support.',
+            bedit_allow: 'Explicitly specify only those <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements which will be added the virtual keyboard support.',
             ug_vkInclusion: 'Put ug_vk.js or the uglified/minimized version ug_vk.min.js following the <code>&lt;script&gt;</code> block above, e.g.:',
        }
     }

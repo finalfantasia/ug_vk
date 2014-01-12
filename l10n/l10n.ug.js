@@ -39,15 +39,18 @@ var l10n = {
     howToUse: {
         title: 'ئىشلىتىش ئۇسۇلى',
         instructions: {
-            varDeclarations: 'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (attachAll, bedit_allow, bedit_deny) گە ئېنىقلىما بېرىسىز. تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ يەرگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ، نورمال ئىشلەۋېرىدۇ)، مەسىلەن:',
-            separateUsingColon: '// Herqaysi element <code>name</code> xasliqining qimmitini ayrishta qosh chekit (:) ishliting.',
+            step1: 'بىرىنچى باسقۇچ',
+            step2: 'ئىككىنچى باسقۇچ',
+            varDeclarations:  'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (<code>attachAll</code>, <code>bedit_allow</code>, <code>bedit_deny</code>) گە ئېنىقلىما بېرىسىز. ھازىر تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ <code>&lt;script&gt;</code> بۆلىكىنىڭ ئىچىگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ نورمال ئىشلەۋېرىدۇ. مەسىلەن:',
+            varExplanations: 'يۇقىرىقى كوددىكى ھەر قايسى ئۆزگەرگۈچلەرنىڭ رولى: ',
+            separateUsingColon: '// Qosh chekit (:) arqiliq herqaysi element <code>name</code> xasliqining qimmitini ayrip yezing.',
             attachAll: {
-                definition: '// Bu ozgerguchining qimmiti <code>true</code> bolsa, mezkur kunupka taxtisi nowettiki tor bettiki hemme <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirige esilidu.',
-                comment: '// Diqqet, eger <code>bedit_deny</code> ni ishletken bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
+                definition: 'قىممىتى <code>true</code> بولغاندا، نۆۋەتتىكى بەتتىكى بارلىق <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرىدا ئۇيغۇرچە كىرگۈزۈشكە بولىدۇ.',
+                comment: '// Eger <code>bedit_deny</code> ni ishlemekchi bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
             },
-            bedit_deny: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilmaydighan <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirini ularning <code>name</code> xasliqining qimmiti arqiliq belgilep berisiz.',
-            bedit_allow: '// Bu ozgerguchi arqiliq, nowettiki bette mezkur kunupka taxtisi esilidighan <code>&lt;input&gt;</code> we <code>&lt;textarea&gt;</code> elementlirini ularning <code>name</code> xasliqining qimmiti arqiliq belgilep berisiz.',
-            ug_vkInclusion: 'يۇقىرىدىكى <code>&lt;script&gt;</code> بەلگىسىدىن كېيىن، يەنە بىر دانە <code>&lt;script&gt;</code> بەلگىسىنى يېزىش ئارقىلىق ug_vk.js ياكى ئۇنىڭ ھەجىمى كىچكرەك نۇسخىسى، ug_vk.min.js، نى قوشىسىز، مەسىلەن:'
+            bedit_deny: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى چەكلەنمەكچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرىنى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
+            bedit_allow: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى قوشۇلماقچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرىنى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
+            ug_vkInclusion:  'يۇقىرىدىكى <code>&lt;script&gt;</code> بەلگىسىدىن كېيىن، يەنە بىر دانە <code>&lt;script&gt;</code> بەلگىسىنى يېزىش ئارقىلىق ug_vk.js ياكى ئۇنىڭ ھەجىمى كىچكرەك نۇسخىسى، ug_vk.min.js، نى قوشىسىز. مەسىلەن:'
        }
     }
 };
