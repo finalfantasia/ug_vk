@@ -254,9 +254,12 @@
     function keydownListener(e) {
         var event = e || window.event,
             charCode = 'which' in event ? event.which : event.keyCode,
-            c = String.fromCharCode(charCode).toUpperCase();
+            c = String.fromCharCode(charCode).toUpperCase(),
+            // [Ctrl] on PC === [Command] on Mac;
+            ctrlKey = event.ctrlKey || // [Ctrl] on PC
+                        event.metaKey; // [Command] on Mac
 
-        if (event.ctrlKey && c in CTRL_KEY_LISTENERS) {
+        if (ctrlKey && c in CTRL_KEY_LISTENERS) {
             CTRL_KEY_LISTENERS[c](event);
 
             if ('preventDefault' in event) {
@@ -275,11 +278,14 @@
             charCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(charCode),
             isAlphabetic = /^[A-Z]{1}$/.test(c.toUpperCase()),
+            // [Ctrl] on PC === [Command] on Mac;
+            ctrlKey = event.ctrlKey || // [Ctrl] on PC
+                        event.metaKey, // [Command] on Mac
             preventDefaultAndStopPropagation = false;
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
-        if (!event.ctrlKey && keyboardMode[target.name] === 0) {
+        if (!ctrlKey && keyboardMode[target.name] === 0) {
             if (c in KEY_CHAR_MAP) {
                 if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
