@@ -110,7 +110,9 @@
 
         CTRL_KEY_LISTENERS = {};
 
+        // Backward-compatibility
         CTRL_KEY_LISTENERS.K = switchKeyboardMode;
+        CTRL_KEY_LISTENERS.T = switchWritingDirection;
         // [Ctrl-T] can no longer be used for switching the writing direction in WebKit (Blink), see:
         //   https://code.google.com/p/chromium/issues/detail?id=33056
         // Therefore, use [Ctrl-Y] ('Y' as in the Uyghur word 'Yönilish')
