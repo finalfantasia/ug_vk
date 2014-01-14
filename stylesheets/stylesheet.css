@@ -4,12 +4,26 @@
 */
 
 @font-face {
-    font-family: 'ALKATIP UI';
+    font-family: 'UKIJ Ekran';
     unicode-range: U+0626-06D5, U+FB56-FEFC;
-    src: url('../fonts/alkatip_ui.eot');
-    src: local('ALKATIP UI'),
-         url('../fonts/alkatip_ui.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/alkatip_ui.woff') format('woff');
+    src: url('../fonts/UKIJEkran.eot');
+    src: url('../fonts/UKIJEkran.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/UKIJEkran.woff') format('woff');
+}
+
+*:lang(en) {
+    unicode-bidi: embed;
+    direction: ltr;
+}
+
+*:lang(ug) {
+    unicode-bidi: normal;
+    direction: rtl;
+}
+
+.bidi-override-rtl {
+    unicode-bidi: bidi-override;
+    direction: rtl;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -61,7 +75,7 @@ body {
   font-size: 15px;
   line-height: 1.5;
   background: #fafafa url(../images/body-bg.jpg) 0 0 repeat;
-  font-family: 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-weight: 400;
   color: #666;
 }
@@ -76,7 +90,7 @@ a:hover {
 header {
   padding-top: 40px;
   padding-bottom: 40px;
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
   border-bottom: solid 1px #275da1;
 }
@@ -95,7 +109,7 @@ header h2 {
   color: #9ddcff;
   font-weight: normal;
   line-height: 1.3;
-  width: 540px;
+  width: 575px;
   letter-spacing: 0;
 }
 
@@ -112,7 +126,7 @@ header h2 {
 
 #main-content {
   width: 690px;
-  float: left;
+  float: right;
 }
 
 #main-content img {
@@ -120,13 +134,13 @@ header h2 {
 }
 
 aside#sidebar {
-  width: 200px;
-  padding-left: 20px;
-  min-height: 504px;
   float: right;
-  background: transparent url(../images/sidebar-bg.jpg) 0 0 no-repeat;
-  font-size: 12px;
+  width: 200px;
+  min-height: 504px;
+  padding-right: 20px;
   line-height: 1.3;
+  background: transparent url(../images/sidebar-bg.jpg) top right no-repeat;
+  font-size: 12px;
 }
 
 aside#sidebar p.repo-owner,
@@ -141,30 +155,29 @@ aside#sidebar p.repo-owner a {
 a.button {
   width: 134px;
   height: 58px;
+  padding: 14px 34px 8px 50px;
   line-height: 1.2;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: 23px;
   color: #fff;
-  padding-left: 68px;
-  padding-top: 22px;
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
 }
 a.button small {
   display: block;
-  font-size: 11px;
+  font-size: .75em;
 }
 header a.button {
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   background: transparent url(../images/github-button.png) 0 0 no-repeat;
 }
 aside a.button {
   width: 138px;
-  padding-left: 64px;
+  padding-right: 14px;
   display: block;
   background: transparent url(../images/download-button.png) 0 0 no-repeat;
   margin-bottom: 20px;
-  font-size: 21px;
+  font-size: 20px;
 }
 
 code, pre {
@@ -175,9 +188,11 @@ code, pre {
 }
 
 code {
-  background-color: #f2f8fc;
   border: solid 1px #dbe7f3;
   padding: 0 3px;
+  background-color: #f2f8fc;
+  unicode-bidi: bidi-override !important;
+  direction: ltr !important;
 }
 
 pre {
@@ -234,7 +249,7 @@ form {
 /* GENERAL ELEMENT TYPE STYLES */
 
 #main-content h1 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
   font-size: 2.8em;
   letter-spacing: -1px;
   color: #474747;
@@ -243,12 +258,12 @@ form {
 #main-content h1:before {
   content: "/";
   color: #9ddcff;
-  padding-right: 0.3em;
-  margin-left: -0.9em;
+  padding-left: 0.3em;
+  margin-right: -0.9em;
 }
 
 #main-content h2 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 8px;
@@ -257,12 +272,12 @@ form {
 #main-content h2:before {
   content: "//";
   color: #9ddcff;
-  padding-right: 0.3em;
-  margin-left: -1.5em;
+  padding-left: 0.3em;
+  margin-right: -1.5em;
 }
 
 #main-content h3 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: 18px;
   font-weight: bold;
   margin-top: 24px;
@@ -271,14 +286,15 @@ form {
 }
 
 #main-content h3:before {
+
   content: "///";
   color: #9ddcff;
-  padding-right: 0.3em;
-  margin-left: -2em;
+  padding-left: 0.3em;
+  margin-right: -2em;
 }
 
 #main-content h4 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: 15px;
   font-weight: bold;
   color: #474747;
@@ -287,24 +303,24 @@ form {
 h4:before {
   content: "////";
   color: #9ddcff;
-  padding-right: 0.3em;
-  margin-left: -2.8em;
+  padding-left: 0.3em;
+  margin-right: -2.8em;
 }
 
 #main-content h5 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: 14px;
   color: #474747;
 }
 h5:before {
   content: "/////";
   color: #9ddcff;
-  padding-right: 0.3em;
-  margin-left: -3.2em;
+  padding-left: 0.3em;
+  margin-right: -3.2em;
 }
 
 #main-content h6 {
-  font-family: 'Architects Daughter', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
+  font-family: 'UKIJ Ekran', sans-serif;
   font-size: .8em;
   color: #474747;
 }
@@ -363,17 +379,6 @@ footer a {
 }
 footer a:hover {
   color: #444;
-}
-
-*:lang(ug) {
-    unicode-bidi: embed;
-    direction: rtl;
-    font-family: 'ALKATIP UI', 'Helvetica Neue', 'Segoe UI', Cantarell, sans-serif;
-}
-
-.bidi-override-ltr {
-    unicode-bidi: bidi-override;
-    direction: ltr;
 }
 
 /* MISC */
