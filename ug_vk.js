@@ -180,8 +180,8 @@
             // Automatically prepend hamza if ch is an Uyghur vowel and the conditions hold true.
             ch = prependHamzaConditionally(ch, element);
 
-            element.value = element.value.substring(0, element.selectionStart) +
-                ch + element.value.substring(element.selectionEnd);
+            element.value = element.value.slice(0, element.selectionStart) +
+                ch + element.value.slice(element.selectionEnd);
 
             if (previousScrollTop) {
                 element.scrollTop = previousScrollTop;
