@@ -40,10 +40,10 @@ var l10n = {
             step2: 'ئىككىنچى باسقۇچ',
             varDeclarations:  'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (<code>attachAll</code>, <code>bedit_allow</code>, <code>bedit_deny</code>) گە ئېنىقلىما بېرىسىز. ھازىر تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ <code>&lt;script&gt;</code> بۆلىكىنىڭ ئىچىگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ نورمال ئىشلەۋېرىدۇ. مەسىلەن:',
             varExplanations: 'يۇقىرىقى كوددىكى ھەر قايسى ئۆزگەرگۈچلەرنىڭ رولى: ',
-            separateUsingColon: '// Qosh chekit (:) arqiliq herqaysi element <code>name</code> xasliqining qimmitini ayrip yezing.',
+            separateUsingColon: '// <code>name</code> xasliq qimmetlirini qosh chekit (:) bilen ayring.',
             attachAll: {
                 definition: 'قىممىتى <code>true</code> بولغاندا، نۆۋەتتىكى بەتتىكى بارلىق <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرىدا ئۇيغۇرچە كىرگۈزۈشكە بولىدۇ.',
-                comment: '// Eger <code>bedit_deny</code> ni ishlemekchi bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
+                comment: '// <code>bedit_deny</code> ni ishlemekchi bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
             },
             bedit_deny: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى چەكلەنمەكچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرى (مەسىلەن، مۇنبەرلەردىكى تور بېكەت ئادرېسى، ئېلخەت، پارول، ۋە ياكى ئەزا ھېسابات نومۇرى كىرگۈزۈش رامكىلىرى) نى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
             bedit_allow: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى قوشۇلماقچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرى (مەسىلەن، مۇنبەرلەردىكى ئاختۇرۇش (ئىزدەش) رامكىلىرى، تېما ياكى ئىنكاس يېزىش رامكىلىرى قاتارلىقلار) نى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
