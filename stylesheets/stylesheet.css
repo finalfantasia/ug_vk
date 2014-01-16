@@ -134,7 +134,7 @@ header h2 {
 }
 
 aside#sidebar {
-  float: right;
+  float: left;
   width: 200px;
   min-height: 504px;
   padding-right: 20px;
@@ -153,9 +153,9 @@ aside#sidebar p.repo-owner a {
 }
 
 a.button {
-  width: 134px;
+  width: 138px;
   height: 58px;
-  padding: 14px 34px 8px 50px;
+  padding: 14px 14px 8px 50px;
   line-height: 1.2;
   font-family: 'UKIJ Ekran', sans-serif;
   font-size: 23px;
