@@ -3,7 +3,6 @@
     The MIT License (MIT)
     Copyright (c) 2013, 2014 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
 */
-
 (function (window) {
     'use strict';
 
@@ -154,8 +153,6 @@
 
                 if (!isArabicLetter(previousChar) || isUyghurVowel(previousChar)) {
                     result = HAMZA + ch;
-                } else {
-                    result = ch;
                 }
             }
         }
@@ -494,4 +491,3 @@
 
     onDomReady(load);
 }) (window);
-
