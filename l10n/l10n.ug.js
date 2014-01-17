@@ -43,7 +43,7 @@ var l10n = {
             separateUsingColon: '// <code>name</code> xasliq qimmetlirini qosh chekit (:) bilen ayring.',
             attachAll: {
                 definition: 'قىممىتى <code>true</code> بولغاندا، نۆۋەتتىكى بەتتىكى بارلىق <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرىدا ئۇيغۇرچە كىرگۈزۈشكە بولىدۇ.',
-                comment: '// <code>bedit_deny</code> ni ishlemekchi bolsingiz, bu ozgerguchini ishlitish hajetsiz.'
+                comment: '// <code>bedit_deny</code> ni ishletkende, bu ozgerguchni ishlitish hajetsiz.'
             },
             bedit_deny: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى چەكلەنمەكچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرى (مەسىلەن، مۇنبەرلەردىكى تور بېكەت ئادرېسى، ئېلخەت، پارول، ۋە ياكى ئەزا ھېسابات نومۇرى كىرگۈزۈش رامكىلىرى) نى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
             bedit_allow: 'بۇ ئۆزگەرگۈچتە، ئۇيغۇرچە كىرگۈزۈش ئىقتىدارى قوشۇلماقچى بولغان <code>&lt;input&gt;</code> ۋە <code>&lt;textarea&gt;</code> ئېلېمېنتلىرى (مەسىلەن، مۇنبەرلەردىكى ئاختۇرۇش (ئىزدەش) رامكىلىرى، تېما ياكى ئىنكاس يېزىش رامكىلىرى قاتارلىقلار) نى ئۇلارنىڭ <code>name</code> خاسلىقى ئارقىلىق بەلگىلەپ بېرىسىز.',
