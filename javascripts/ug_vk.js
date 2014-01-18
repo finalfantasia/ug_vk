@@ -127,7 +127,7 @@
     function switchWritingDirection(event) {
         var element = event.srcElement || event.target;
 
-        element.style.direction = (element.style.direction === 'ltr' ? 'rtl' : 'ltr');
+        element.dir = (element.dir === 'ltr' ? 'rtl' : 'ltr');
     }
 
     function isArabicLetter(ch) {
