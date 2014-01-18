@@ -38,7 +38,8 @@ var l10n = {
         instructions: {
             step1: 'بىرىنچى باسقۇچ',
             step2: 'ئىككىنچى باسقۇچ',
-            varDeclarations:  'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بىلەن <code>&lt;/head&gt;</code> نىڭ ئارىسىغا بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (<code>attachAll</code>, <code>bedit_allow</code>, <code>bedit_deny</code>) گە ئېنىقلىما بېرىسىز. ھازىر تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ <code>&lt;script&gt;</code> بۆلىكىنىڭ ئىچىگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ نورمال ئىشلەۋېرىدۇ. مەسىلەن:',
+            varDeclarations:
+  'تور بېتىڭىزنىڭ ئىچىدىكى <code>&lt;head&gt;</code> بەلگىسىنىڭ ئىچىگە بىر دانە <code>&lt;script&gt;</code> بەلگىسى قويۇپ، مەزكۇر كۇنۇپكا تاختىسىنىڭ تەڭشەك ئۆزگەرگۈچلىرى (<code>attachAll</code>, <code>bedit_allow</code>, <code>bedit_deny</code>) گە ئېنىقلىما بېرىسىز. ھازىر تور بېكىتىڭىزدە bedit.js نى ئىشلىتىۋاتقان بولسىڭىز، ئۆزىڭىز تەڭشەپ قويغان ئۆزگەرگۈچلەرنى مۇشۇ <code>&lt;script&gt;</code> بۆلىكىنىڭ ئىچىگە ئۆز پېتى كۆچۈرۈپ قويسىڭىزمۇ نورمال ئىشلەۋېرىدۇ. مەسىلەن:',
             varExplanations: 'يۇقىرىقى كوددىكى ھەر قايسى ئۆزگەرگۈچلەرنىڭ رولى: ',
             separateUsingColon: '// <code>name</code> xasliq qimmetlirini qosh chekit (:) bilen ayring.',
             attachAll: {

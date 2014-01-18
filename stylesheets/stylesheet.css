@@ -32,21 +32,6 @@ time, mark, audio, video {
          url('../fonts/UKIJEkran.woff') format('woff');
 }
 
-*:lang(en) {
-    unicode-bidi: embed;
-    direction: ltr;
-}
-
-*:lang(ug) {
-    unicode-bidi: normal;
-    direction: rtl;
-}
-
-.bidi-override-rtl {
-    unicode-bidi: bidi-override;
-    direction: rtl;
-}
-
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -192,8 +177,6 @@ code {
   border: solid 1px #dbe7f3;
   padding: 0 3px;
   background-color: #f2f8fc;
-  unicode-bidi: embed !important;
-  direction: ltr !important;
 }
 
 pre {
