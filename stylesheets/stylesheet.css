@@ -27,9 +27,9 @@ time, mark, audio, video {
 @font-face {
     font-family: 'Awesome Font';
     unicode-range: U+0626-06D5, U+FB56-FEFC;
-    src: url('../fonts/UKIJEkran.eot');
-    src: url('../fonts/UKIJEkran.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/UKIJEkran.woff') format('woff');
+    src: url('../fonts/ukijekran.eot');
+    src: url('../fonts/ukijekran.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ukijekran.woff') format('woff');
 }
 
 /* HTML5 display-role reset for older browsers */
