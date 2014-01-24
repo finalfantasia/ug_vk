@@ -7,15 +7,20 @@
     'use strict';
 
     var document = window.document,
-        ARABIC_START = 0x0600, // Starting Unicode point of Arabic range
-        ARABIC_END = 0x06FF,   // Ending Unicode point of Arabic range
+        ARABIC_START = 0x0600, // Starting point of Unicode Arabic range
+        ARABIC_END = 0x06FF,   // Ending point of Unicode Arabic range
         KEY_CHAR_MAP,
         UYGHUR_VOWELS,
         ARABIC_PUNCTUATION_MARKS,
         HAMZA,
         CTRL_KEY_LISTENERS,
-        keyboardMode = {}, // 0: Uyghur, 1: Latin
-        initialized = false;
+        keyboardMode = {}, // 'en' or 'ug'
+        initialized = false,
+        keyboardModeChangeListeners = [];
+
+    function isFunction(object) {
+        return (typeof object === 'function');
+    }
 
     function isArray(object) {
         return (Object.prototype.toString.call(object) === '[object Array]');
@@ -34,7 +39,6 @@
     }
 
     function initialize() {
-        // ASCII -> Unicode of Arabic/Uyghur characters
         KEY_CHAR_MAP = {
             a: 'ھ',
             b: 'ب',
@@ -120,37 +124,46 @@
     }
 
     function switchKeyboardMode(event) {
-        var element = event.srcElement || event.target;
+        var target = event.srcElement || event.target,
+            i;
 
-        keyboardMode[element.name] = 1 - keyboardMode[element.name];
+        keyboardMode[target.name] = (keyboardMode[target.name] === 'ug' ? 'en' : 'ug');
+
+        for (i = 0; i < keyboardModeChangeListeners.length; i++) {
+            keyboardModeChangeListeners[i]({
+                target: target,
+                keyboardMode: keyboardMode[target.name]
+            });
+        }
     }
 
     function switchWritingDirection(event) {
-        var element = event.srcElement || event.target;
+        var target = event.srcElement || event.target;
 
-        element.dir = (element.dir === 'ltr' ? 'rtl' : 'ltr');
+        target.dir = (target.dir === 'ltr' ? 'rtl' : 'ltr');
     }
 
     function isArabicLetter(ch) {
         var unicode = ch.charCodeAt(0);
 
-        return (unicode >= ARABIC_START && unicode < ARABIC_END) && indexOf(ARABIC_PUNCTUATION_MARKS, ch) < 0;
+        return (unicode >= ARABIC_START && unicode < ARABIC_END) &&
+                indexOf(ARABIC_PUNCTUATION_MARKS, ch) < 0;
     }
 
     function isUyghurVowel(ch) {
         return isArabicLetter(ch) && indexOf(UYGHUR_VOWELS, ch) >= 0;
     }
 
-    function prependHamzaConditionally(ch, element) {
+    function prependHamzaConditionally(target, ch) {
         var result = ch,
-            start = element.selectionStart,
+            start = target.selectionStart,
             previousChar;
 
         if (isUyghurVowel(ch)) {
             if (start === 0) { // cursor is at the begginning of the input area
                 result = HAMZA + ch;
             } else {
-                previousChar = element.value[start - 1];
+                previousChar = target.value[start - 1];
 
                 if (!isArabicLetter(previousChar) || isUyghurVowel(previousChar)) {
                     result = HAMZA + ch;
@@ -161,7 +174,7 @@
         return result;
     }
 
-    function insert(element, ch) {
+    function insert(target, ch) {
         var previousSelectionStart,
             currentSelectionStart,
             previousScrollTop,
@@ -170,56 +183,55 @@
         if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
             document.selection.createRange().text = ch;
         } else { // W3C
-            previousSelectionStart = element.selectionStart;
+            previousSelectionStart = target.selectionStart;
 
             // Gecko scrolls up to top in textarea after insertion.
-            if (element.type === 'textarea' && element.scrollTop) {
-                previousScrollTop = element.scrollTop;
-                previousScrollLeft = element.scrollLeft;
+            if (target.type === 'textarea' && target.scrollTop) {
+                previousScrollTop = target.scrollTop;
+                previousScrollLeft = target.scrollLeft;
             }
 
-            // Automatically prepend hamza if ch is an Uyghur vowel and the conditions hold true.
-            ch = prependHamzaConditionally(ch, element);
+            ch = prependHamzaConditionally(target, ch);
 
-            element.value = element.value.slice(0, element.selectionStart) +
-                ch + element.value.slice(element.selectionEnd);
+            target.value = target.value.slice(0, target.selectionStart) +
+                ch + target.value.slice(target.selectionEnd);
 
             if (previousScrollTop) {
-                element.scrollTop = previousScrollTop;
-                element.scrollLeft = previousScrollLeft;
+                target.scrollTop = previousScrollTop;
+                target.scrollLeft = previousScrollLeft;
             }
 
             currentSelectionStart = previousSelectionStart + ch.length;
-            element.setSelectionRange(currentSelectionStart, currentSelectionStart);
+            target.setSelectionRange(currentSelectionStart, currentSelectionStart);
         }
     }
 
-    function addEventListener(element, event, listener) {
-        if ('addEventListener' in element) {    // W3C
-            element.removeEventListener(event, listener, false);
-            element.addEventListener(event, listener, false);
-        } else if ('attachEvent' in element) {  // Trident 4.0-
-            element.detachEvent('on' + event, listener);
-            element.attachEvent('on' + event, listener);
+    function addEventListener(target, event, listener) {
+        if ('addEventListener' in target) {    // W3C
+            target.removeEventListener(event, listener, false);
+            target.addEventListener(event, listener, false);
+        } else if ('attachEvent' in target) {  // Trident 4.0-
+            target.detachEvent('on' + event, listener);
+            target.attachEvent('on' + event, listener);
         }
     }
 
-    function removeEventListener(element, event, listener) {
-        if ('removeEventListener' in element) { // W3C
-            element.removeEventListener(event, listener, false);
-        } else if ('detachEvent' in element) {  // Trident 4.0-
-            element.detachEvent('on' + event, listener);
+    function removeEventListener(target, event, listener) {
+        if ('removeEventListener' in target) { // W3C
+            target.removeEventListener(event, listener, false);
+        } else if ('detachEvent' in target) {  // Trident 4.0-
+            target.detachEvent('on' + event, listener);
         }
     }
 
-    function addSwipeListener(element, listener) {
+    function addSwipeListener(target, listener) {
         var startX, startY, dx, direction,
             X_THRESHOLD = 50,
             Y_THRESHOLD = 15;
 
         function cancelTouch() {
-            removeEventListener(element, 'touchmove', onTouchMove);
-            removeEventListener(element, 'touchend', onTouchEnd);
+            removeEventListener(target, 'touchmove', onTouchMove);
+            removeEventListener(target, 'touchend', onTouchEnd);
 
             startX = null;
             startY = null;
@@ -252,7 +264,7 @@
             cancelTouch();
 
             if (distance > X_THRESHOLD) {
-                listener({ target: element, direction: (dx > 0 ? 'RIGHT' : 'LEFT') });
+                listener({ target: target, direction: (dx > 0 ? 'RIGHT' : 'LEFT') });
             }
         }
 
@@ -261,12 +273,12 @@
                 startX = event.touches[0].pageX;
                 startY = event.touches[0].pageY;
 
-                addEventListener(element, 'touchmove', onTouchMove);
-                addEventListener(element, 'touchend', onTouchEnd);
+                addEventListener(target, 'touchmove', onTouchMove);
+                addEventListener(target, 'touchend', onTouchEnd);
             }
         }
 
-        addEventListener(element, 'touchstart', onTouchStart);
+        addEventListener(target, 'touchstart', onTouchStart);
     }
 
     function keydownListener(e) {
@@ -303,7 +315,7 @@
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
-        if (!ctrlKey && keyboardMode[target.name] === 0) {
+        if (!ctrlKey && keyboardMode[target.name] === 'ug') {
             if (c in KEY_CHAR_MAP) {
                 if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
@@ -350,47 +362,47 @@
     }
 
     function addEventListeners(opts) {
-        var all, element, i;
+        var all, target, i;
 
         all = getAllInputBoxes();
 
         if (opts.all) {
             for (i = 0; i < all.length; i++) {
-                element = all[i];
+                target = all[i];
 
-                if (indexOf(opts.blacklist, element.name) < 0) {
-                    addEventListener(element, 'keydown', keydownListener);
-                    addEventListener(element, 'keypress', keypressListener);
-                    addSwipeListener(element, switchKeyboardMode);
+                if (indexOf(opts.blacklist, target.name) < 0) {
+                    addEventListener(target, 'keydown', keydownListener);
+                    addEventListener(target, 'keypress', keypressListener);
+                    addSwipeListener(target, switchKeyboardMode);
 
-                    keyboardMode[element.name] = 0;
+                    keyboardMode[target.name] = 'ug';
                 }
             }
         } else {
             for (i = 0; i < all.length; i++) {
-                element = all[i];
+                target = all[i];
 
-                if (indexOf(opts.whitelist, element.name) >= 0) {
-                    addEventListener(element, 'keydown', keydownListener);
-                    addEventListener(element, 'keypress', keypressListener);
-                    addSwipeListener(element, switchKeyboardMode);
+                if (indexOf(opts.whitelist, target.name) >= 0) {
+                    addEventListener(target, 'keydown', keydownListener);
+                    addEventListener(target, 'keypress', keypressListener);
+                    addSwipeListener(target, switchKeyboardMode);
 
-                    keyboardMode[element.name] = 0;
+                    keyboardMode[target.name] = 'ug';
                 }
             }
         }
     }
 
     function removeEventListeners() {
-        var all, element, i;
+        var all, target, i;
 
         all = getAllInputBoxes();
 
         for (i = 0; i < all.length; i++) {
-            element = all[i];
+            target = all[i];
 
-            removeEventListener(element, 'keydown', keydownListener);
-            removeEventListener(element, 'keypress', keypressListener);
+            removeEventListener(target, 'keydown', keydownListener);
+            removeEventListener(target, 'keypress', keypressListener);
         }
     }
 
@@ -456,7 +468,7 @@
 
         // API
         window.UG_VK = {
-            addEventListeners: function (overrides) {
+            addInputEventListeners: function (overrides) {
                 var options;
 
                 if (overrides) {
@@ -478,6 +490,15 @@
 
                     removeEventListeners();
                     addEventListeners(options);
+                }
+            },
+            addKeyboardModeChangeListener: function (listener) {
+                if (!initialized) {
+                    return;
+                }
+
+                if (isFunction(listener) && indexOf(keyboardModeChangeListeners, listener) < 0) {
+                    keyboardModeChangeListeners.push(listener);
                 }
             }
         };
