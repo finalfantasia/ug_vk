@@ -14,22 +14,19 @@
         ARABIC_PUNCTUATION_MARKS,
         HAMZA,
         CTRL_KEY_LISTENERS,
-        keyboardMode = {}; // 0: Uyghur, 1: Latin
+        keyboardMode = {}, // 0: Uyghur, 1: Latin
+        initialized = false;
 
     function isArray(object) {
-        return object && ('isArray' in object ?
-            object.isArray() :
-            Object.prototype.toString.call(object) === '[object Array]');
+        return (Object.prototype.toString.call(object) === '[object Array]');
     }
 
     function indexOf(array, element) {
         var i;
 
-        if (isArray(array) && array.length) {
-            for (i = 0; i < array.length; i++) {
-                if (array[i] === element) {
-                    return i;
-                }
+        for (i = 0; i < array.length; i++) {
+            if (array[i] === element) {
+                return i;
             }
         }
 
@@ -118,6 +115,8 @@
         //   https://code.google.com/p/chromium/issues/detail?id=33056
         // Therefore, use [Ctrl-Y] ('Y' as in the Uyghur word 'Yönilish')
         CTRL_KEY_LISTENERS.Y = switchWritingDirection;
+
+        initialized = true;
     }
 
     function switchKeyboardMode(event) {
@@ -355,7 +354,7 @@
 
         all = getAllInputBoxes();
 
-        if (opts.addToAll) {
+        if (opts.all) {
             for (i = 0; i < all.length; i++) {
                 element = all[i];
 
@@ -395,15 +394,15 @@
         }
     }
 
-    function prepareOptions(opts) {
+    function preprocessBeditJSOptions(opts) {
         var NAME_DELIMITER = ':',
             whitelist = opts.whitelist || '',
             blacklist = opts.blacklist || '',
             options = {};
 
-        options.addToAll = !! opts.addToAll;
+        options.all = !! opts.all;
 
-        if (options.addToAll) {
+        if (options.all) {
             if (blacklist.length) {
                 options.blacklist = blacklist.split(NAME_DELIMITER);
             }
@@ -411,60 +410,63 @@
             if (whitelist.length) {
                 options.whitelist = whitelist.split(NAME_DELIMITER);
             }
-
-            if (blacklist.length) {
-                options.blacklist = blacklist.split(NAME_DELIMITER);
-            }
         }
 
         return options;
     }
 
     function checkOptions(opts) {
-        var proceed = false;
+        var proceed;
 
-        if (opts.addToAll) {
-            proceed = true;
-        } else {
-            if (opts.whitelist.length) {
+        if (!! opts.all) {
+            if (opts.blacklist) {
+                proceed = isArray(opts.blacklist);
+            } else {
                 proceed = true;
             }
+        } else {
+            proceed = (isArray(opts.whitelist));
         }
 
         return proceed;
     }
 
     function load() {
-        var initialOptions, initialized = false;
+        var initialOptions = {};
 
-        // Backward-compatibility with bedit.js
-        initialOptions = prepareOptions({
-            addToAll: window.attachAll,
-            whitelist: window.bedit_allow,
-            blacklist: window.bedit_deny
-        });
+        if (initialized) {
+            return;
+        }
+
+        if (typeof (window.UG_VK_OPTS) === 'object') {
+            initialOptions = window.UG_VK_OPTS;
+        } else { // Backward-compatibility with bedit.js
+            initialOptions = preprocessBeditJSOptions({
+                all: window.attachAll,
+                whitelist: window.bedit_allow,
+                blacklist: window.bedit_deny
+            });
+        }
 
         if (checkOptions(initialOptions)) {
             initialize();
-            initialized = true;
 
             addEventListeners(initialOptions);
         }
 
         // API
-        window.ug_vk = {
+        window.UG_VK = {
             addEventListeners: function (overrides) {
                 var options;
 
                 if (overrides) {
-                    options = prepareOptions({
-                        addToAll: 'addToAll' in overrides ?
-                                overrides.addToAll : initialOptions.addToAll,
-                        whitelist: 'whitelist' in overrides && overrides.whitelist.length ?
+                    options = {
+                        all: 'all' in overrides ? !! overrides.all : initialOptions.all,
+                        whitelist: isArray(overrides.whitelist) ?
                                 overrides.whitelist : initialOptions.whitelist,
-                        blacklist: 'blacklist' in overrides && overrides.blacklist.length ?
+                        blacklist: isArray(overrides.blacklist) ?
                                 overrides.blacklist : initialOptions.blacklist
-                    });
+                    };
                 } else {
                     options = initialOptions;
                 }
@@ -472,7 +474,6 @@
                 if (checkOptions(options)) {
                     if (!initialized) {
                         initialize();
-                        initialized = true;
                     }
 
                     removeEventListeners();
