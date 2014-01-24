@@ -9,21 +9,23 @@
     var document = window.document,
         ARABIC_START = 0x0600, // Starting Unicode point of Arabic range
         ARABIC_END = 0x06FF,   // Ending Unicode point of Arabic range
-        NAME_DELIMITER = ':',
         KEY_CHAR_MAP,
         UYGHUR_VOWELS,
         ARABIC_PUNCTUATION_MARKS,
         HAMZA,
         CTRL_KEY_LISTENERS,
-        keyboardMode = {}, // 0: Uyghur, 1: Latin
-        addToAll = 'attachAll' in window ? !!attachAll : false,
-        whitelist = 'bedit_allow' in window ? bedit_allow : '',
-        blacklist = 'bedit_deny' in window ? bedit_deny : '';
+        keyboardMode = {}; // 0: Uyghur, 1: Latin
+
+    function isArray(object) {
+        return object && ('isArray' in object ?
+            object.isArray() :
+            Object.prototype.toString.call(object) === '[object Array]');
+    }
 
     function indexOf(array, element) {
         var i;
 
-        if (array && array.length) {
+        if (isArray(array) && array.length) {
             for (i = 0; i < array.length; i++) {
                 if (array[i] === element) {
                     return i;
@@ -193,6 +195,24 @@
         }
     }
 
+    function addEventListener(element, event, listener) {
+        if ('addEventListener' in element) {    // W3C
+            element.removeEventListener(event, listener, false);
+            element.addEventListener(event, listener, false);
+        } else if ('attachEvent' in element) {  // Trident 4.0-
+            element.detachEvent('on' + event, listener);
+            element.attachEvent('on' + event, listener);
+        }
+    }
+
+    function removeEventListener(element, event, listener) {
+        if ('removeEventListener' in element) { // W3C
+            element.removeEventListener(event, listener, false);
+        } else if ('detachEvent' in element) {  // Trident 4.0-
+            element.detachEvent('on' + event, listener);
+        }
+    }
+
     function addSwipeListener(element, listener) {
         var startX, startY, dx, direction,
             X_THRESHOLD = 50,
@@ -252,8 +272,8 @@
 
     function keydownListener(e) {
         var event = e || window.event,
-            charCode = 'which' in event ? event.which : event.keyCode,
-            c = String.fromCharCode(charCode).toUpperCase(),
+            keyCode = 'which' in event ? event.which : event.keyCode,
+            c = String.fromCharCode(keyCode).toUpperCase(),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                         event.metaKey; // [Command] on Mac
@@ -274,9 +294,9 @@
     function keypressListener(e) {
         var event = e || window.event,
             target = 'target' in event ? event.target : event.srcElement,
-            charCode = 'which' in event ? event.which : event.keyCode,
-            c = String.fromCharCode(charCode),
-            isAlphabetic = /^[A-Z]{1}$/.test(c.toUpperCase()),
+            keyCode = 'which' in event ? event.which : event.keyCode,
+            c = String.fromCharCode(keyCode),
+            isAlphabetic = /^[A-Za-z]{1}$/.test(c),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                         event.metaKey, // [Command] on Mac
@@ -330,60 +350,16 @@
         return all;
     }
 
-    function removeEventListener(element, event, listener) {
-        if ('removeEventListener' in element) { // W3C
-            element.removeEventListener(event, listener, false);
-        } else if ('detachEvent' in element) {  // Trident 4.0-
-            element.detachEvent('on' + event, listener);
-        }
-    }
-
-    function addEventListener(element, event, listener) {
-        if ('addEventListener' in element) {    // W3C
-            element.removeEventListener(event, listener, false);
-            element.addEventListener(event, listener, false);
-        } else if ('attachEvent' in element) {  // Trident 4.0-
-            element.detachEvent('on' + event, listener);
-            element.attachEvent('on' + event, listener);
-        }
-    }
-
-    function addEventListeners() {
-        var all,
-            element,
-            cancel = true,
-            i;
-
-        if (!addToAll) {
-            if (whitelist.length) {
-                cancel = false;
-                whitelist = whitelist.split(NAME_DELIMITER);
-            }
-
-            if (blacklist.length) {
-                cancel = false;
-                addToAll = true; // A blacklist by itself implies 'addToAll'.
-                blacklist = blacklist.split(NAME_DELIMITER);
-            }
-        } else {
-            cancel = false;
-
-            if (blacklist.length) {
-                blacklist = blacklist.split(NAME_DELIMITER);
-            }
-        }
-
-        if (cancel) {
-            return;
-        }
+    function addEventListeners(opts) {
+        var all, element, i;
 
         all = getAllInputBoxes();
 
-        if (addToAll) {
+        if (opts.addToAll) {
             for (i = 0; i < all.length; i++) {
                 element = all[i];
 
-                if (indexOf(blacklist, element.name) < 0) {
+                if (indexOf(opts.blacklist, element.name) < 0) {
                     addEventListener(element, 'keydown', keydownListener);
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
@@ -395,7 +371,7 @@
             for (i = 0; i < all.length; i++) {
                 element = all[i];
 
-                if (indexOf(whitelist, element.name) >= 0) {
+                if (indexOf(opts.whitelist, element.name) >= 0) {
                     addEventListener(element, 'keydown', keydownListener);
                     addEventListener(element, 'keypress', keypressListener);
                     addSwipeListener(element, switchKeyboardMode);
@@ -406,9 +382,104 @@
         }
     }
 
+    function removeEventListeners() {
+        var all, element, i;
+
+        all = getAllInputBoxes();
+
+        for (i = 0; i < all.length; i++) {
+            element = all[i];
+
+            removeEventListener(element, 'keydown', keydownListener);
+            removeEventListener(element, 'keypress', keypressListener);
+        }
+    }
+
+    function prepareOptions(opts) {
+        var NAME_DELIMITER = ':',
+            whitelist = opts.whitelist || '',
+            blacklist = opts.blacklist || '',
+            options = {};
+
+        options.addToAll = !! opts.addToAll;
+
+        if (options.addToAll) {
+            if (blacklist.length) {
+                options.blacklist = blacklist.split(NAME_DELIMITER);
+            }
+        } else {
+            if (whitelist.length) {
+                options.whitelist = whitelist.split(NAME_DELIMITER);
+            }
+
+            if (blacklist.length) {
+                options.blacklist = blacklist.split(NAME_DELIMITER);
+            }
+        }
+
+        return options;
+    }
+
+    function checkOptions(opts) {
+        var proceed = false;
+
+        if (opts.addToAll) {
+            proceed = true;
+        } else {
+            if (opts.whitelist.length) {
+                proceed = true;
+            }
+        }
+
+        return proceed;
+    }
+
     function load() {
-        initialize();
-        addEventListeners();
+        var initialOptions, initialized = false;
+
+        // Backward-compatibility with bedit.js
+        initialOptions = prepareOptions({
+            addToAll: window.attachAll,
+            whitelist: window.bedit_allow,
+            blacklist: window.bedit_deny
+        });
+
+        if (checkOptions(initialOptions)) {
+            initialize();
+            initialized = true;
+
+            addEventListeners(initialOptions);
+        }
+
+        // API
+        window.ug_vk = {
+            addEventListeners: function (overrides) {
+                var options;
+
+                if (overrides) {
+                    options = prepareOptions({
+                        addToAll: 'addToAll' in overrides ?
+                                overrides.addToAll : initialOptions.addToAll,
+                        whitelist: 'whitelist' in overrides && overrides.whitelist.length ?
+                                overrides.whitelist : initialOptions.whitelist,
+                        blacklist: 'blacklist' in overrides && overrides.blacklist.length ?
+                                overrides.blacklist : initialOptions.blacklist
+                    });
+                } else {
+                    options = initialOptions;
+                }
+
+                if (checkOptions(options)) {
+                    if (!initialized) {
+                        initialize();
+                        initialized = true;
+                    }
+
+                    removeEventListeners();
+                    addEventListeners(options);
+                }
+            }
+        };
     }
 
     function onDomReady(domReadyCallback) {
