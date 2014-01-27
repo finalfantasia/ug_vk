@@ -207,10 +207,10 @@
     }
 
     function addEventListener(target, event, listener) {
-        if ('addEventListener' in target) {    // W3C
+        if ('addEventListener' in target) { // W3C
             target.removeEventListener(event, listener, false);
             target.addEventListener(event, listener, false);
-        } else if ('attachEvent' in target) {  // Trident 4.0-
+        } else { // Trident 4.0-
             target.detachEvent('on' + event, listener);
             target.attachEvent('on' + event, listener);
         }
@@ -219,7 +219,7 @@
     function removeEventListener(target, event, listener) {
         if ('removeEventListener' in target) { // W3C
             target.removeEventListener(event, listener, false);
-        } else if ('detachEvent' in target) {  // Trident 4.0-
+        } else { // Trident 4.0-
             target.detachEvent('on' + event, listener);
         }
     }
@@ -319,7 +319,7 @@
             if (c in KEY_CHAR_MAP) {
                 if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
-                } else {                             // W3C
+                } else { // W3C
                     insert(target, KEY_CHAR_MAP[c]);
                 }
                 preventDefaultAndStopPropagation = true;
@@ -333,7 +333,7 @@
             if ('preventDefault' in event) { // W3C
                 event.preventDefault();
                 event.stopPropagation();
-            } else {                        // Trident 4.0-
+            } else { // Trident 4.0-
                 event.cancelBubble = true;
             }
         }
@@ -510,7 +510,8 @@
 
         function callDomReadyCallback() {
             if (!isDomReadyCallbackCalled) {
-                if (!('body' in document)) { // In case IE gets a little overzealous.
+                // http://bugs.jquery.com/ticket/5443
+                if (!('body' in document)) {
                     return setTimeout(callDomReadyCallback, 1);
                 }
 
@@ -520,13 +521,12 @@
         }
 
         function domReadyListener() {
-            if ('removeEventListener' in document) {    // W3C
+            if ('removeEventListener' in document) { // W3C
                 document.removeEventListener('DOMContentLoaded', domReadyListener, false);
-            } else if ('detachEvent' in document) {     // Trident 4.0-
-                // Execution gets here only when document.readyState !== 'loading'
+            } else { // Trident 4.0-
+                // Execution gets here only when document.readyState === 'complete'
+                // in oldIEs.
                 document.detachEvent('onreadystatechange', domReadyListener);
-            } else {
-                return;
             }
 
             callDomReadyCallback();
@@ -540,7 +540,7 @@
             try {
                 document.documentElement.doScroll('left');
             } catch (e) {
-                setTimeout(ieScrollCheck, 1);
+                setTimeout(ieScrollCheck, 50);
                 return;
             }
 
@@ -548,15 +548,15 @@
         }
 
         function addDomReadyListener() {
-            var isTopLevel = false;
+            var isTop = false;
 
             if (isDomReadyListenerAdded) {
                 return;
             }
             isDomReadyListenerAdded = true;
 
-            // In case DOM has already been loaded, call the function right away.
-            if (document.readyState !== 'loading') {
+            // https://github.com/jquery/jquery/pull/907
+            if (document.readyState === 'complete') {
                 callDomReadyCallback();
                 return;
             }
@@ -564,16 +564,16 @@
             if ('addEventListener' in document) {   // W3C
                 document.addEventListener('DOMContentLoaded', domReadyListener, false);
                 window.addEventListener('load', domReadyListener, false); // Fallback.
-            } else if ('attachEvent' in document) { // Trident 4.0-
+            } else { // Trident 4.0-
                 document.attachEvent('onreadystatechange', domReadyListener);
                 document.attachEvent('onload', domReadyListener); // Fallback.
 
                 // http://javascript.nwbox.com/IEContentLoaded/
                 try {
-                    isTopLevel = !window.frameElement;
+                    isTop = (window.frameElement === null && document.documentElement);
                 } catch (e) {}
 
-                if ('doScroll' in document.documentElement && isTopLevel) {
+                if (isTop && 'doScroll' in document.documentElement) {
                     ieScrollCheck();
                 }
             }
