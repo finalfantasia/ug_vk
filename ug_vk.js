@@ -510,11 +510,6 @@
 
         function callDomReadyCallback() {
             if (!isDomReadyCallbackCalled) {
-                // http://bugs.jquery.com/ticket/5443
-                if (!('body' in document)) {
-                    return setTimeout(callDomReadyCallback, 1);
-                }
-
                 isDomReadyCallbackCalled = true;
                 domReadyCallback();
             }
@@ -523,10 +518,6 @@
         function domReadyListener() {
             if ('removeEventListener' in document) { // W3C
                 document.removeEventListener('DOMContentLoaded', domReadyListener, false);
-            } else { // Trident 4.0-
-                // Execution gets here only when document.readyState === 'complete'
-                // in oldIEs.
-                document.detachEvent('onreadystatechange', domReadyListener);
             }
 
             callDomReadyCallback();
@@ -537,8 +528,10 @@
                 return;
             }
 
+            // http://dean.edwards.name/weblog/2006/06/again/#comment334577
+            // http://dean.edwards.name/weblog/2006/06/again/#comment367184
             try {
-                document.documentElement.doScroll('left');
+                document.body.doScroll('up');
             } catch (e) {
                 setTimeout(ieScrollCheck, 50);
                 return;
@@ -548,34 +541,23 @@
         }
 
         function addDomReadyListener() {
-            var isTop = false;
+            // document.readyState checking is reliable only in modern browsers.
+            if (!('attachEvent' in document) && document.readyState !== 'loading') {
+                callDomReadyCallback();
+                return;
+            }
 
             if (isDomReadyListenerAdded) {
                 return;
             }
             isDomReadyListenerAdded = true;
 
-            // https://github.com/jquery/jquery/pull/907
-            if (document.readyState === 'complete') {
-                callDomReadyCallback();
-                return;
-            }
-
             if ('addEventListener' in document) {   // W3C
                 document.addEventListener('DOMContentLoaded', domReadyListener, false);
                 window.addEventListener('load', domReadyListener, false); // Fallback.
             } else { // Trident 4.0-
-                document.attachEvent('onreadystatechange', domReadyListener);
                 document.attachEvent('onload', domReadyListener); // Fallback.
-
-                // http://javascript.nwbox.com/IEContentLoaded/
-                try {
-                    isTop = (window.frameElement === null && document.documentElement);
-                } catch (e) {}
-
-                if (isTop && 'doScroll' in document.documentElement) {
-                    ieScrollCheck();
-                }
+                ieScrollCheck();
             }
         }
 
