@@ -50,7 +50,8 @@
                         <% }); %>
                     </ul>
                     <h2><a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a><%= howToUse.title %></h2>
-                    <h3><%= howToUse.instructions.step1 %></h3>
+                    <h3><%= howToUse.instructions.header %></h3>
+                    <h4><%= howToUse.instructions.step1 %></h4>
                     <p><%= howToUse.instructions.varDeclarations %></p>
                     <div class="highlight highlight-HTML">
                         <pre dir="ltr">
@@ -58,14 +59,26 @@
 <span class="nt">&lt;head&gt;</span>
 ...
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
-        <span class="c1"><%= howToUse.instructions.attachAll.comment %></span>
-        <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-
-        <span class="c1"><%= howToUse.instructions.separateUsingColon %></span>
-        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
-
-        <span class="c1"><%= howToUse.instructions.separateUsingColon %></span>
-        <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
+        <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
+                <span class="nx">all</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'password'</span><span class="o">,</span> <span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
+            <span class="o">}</span><span class="p">;</span>
+    <span class="nt">&lt;/script&gt;</span>
+...
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+...
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></pre></div><p><%= howToUse.instructions.or %></p><div class="highlight highlight-HTML">
+                    <pre dir="ltr">
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+...
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+        <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
+                <span class="nx">all</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="nx">whitelist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'name'</span><span class="o">,</span> <span class="s1">'comment'</span><span class="o">,</span> <span class="s1">'post'</span><span class="o">]</span>
+            <span class="o">}</span><span class="p">;</span>
     <span class="nt">&lt;/script&gt;</span>
 ...
 <span class="nt">&lt;/head&gt;</span>
@@ -75,11 +88,62 @@
 <span class="nt">&lt;/html&gt;</span></pre></div>
                 <p><%= howToUse.instructions.varExplanations %></p>
                 <ul>
-                    <li><code>attachAll</code>: <%= howToUse.instructions.attachAll.definition %></li>
-                    <li><code>bedit_allow</code>: <%= howToUse.instructions.beditAllow %></li>
-                    <li><code>bedit_deny</code>: <%= howToUse.instructions.beditDeny %></li>
+                    <li><code>all</code>: <%= howToUse.instructions.all %></li>
+                    <li><code>whitelist</code>: <%= howToUse.instructions.whitelist %></li>
+                    <li><code>blacklist</code>: <%= howToUse.instructions.blacklist %></li>
                 </ul>
-                <h3><%= howToUse.instructions.step2 %></h3>
+                <h4><%= howToUse.instructions.step2 %></h4>
+                <p><%= howToUse.instructions.ugvkInclusion %></p>
+                <div class="highlight highlight-HTML">
+                    <pre dir="ltr">
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+...
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+        <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
+                <span class="nx">all</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'password'</span><span class="o">,</span> <span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
+            <span class="o">}</span><span class="p">;</span>
+    <span class="nt">&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//www.beket.com/js/ug_vk.min.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+...
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+...
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></pre>
+                    </div>
+                <p><%= howToUse.instructions.thatsIt %></p>
+                    <h3><%= howToUse.instructions.legacy.header %></h3>
+                    <h4><%= howToUse.instructions.step1 %></h4>
+                    <p><%= howToUse.instructions.varDeclarations %></p>
+                    <div class="highlight highlight-HTML">
+                        <pre dir="ltr">
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+...
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+        <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+        <span class="c1"><%= howToUse.instructions.legacy.separateUsingColon %></span>
+        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
+
+        <span class="c1"><%= howToUse.instructions.legacy.separateUsingColon %></span>
+        <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
+    <span class="nt">&lt;/script&gt;</span>
+...
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+...
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></pre></div><p><%= howToUse.instructions.legacy.beditJSVarsReuse %></p>
+                <p><%= howToUse.instructions.varExplanations %></p>
+                <ul>
+                    <li><code>attachAll</code>: <%= howToUse.instructions.all %></li>
+                    <li><code>bedit_allow</code>: <%= howToUse.instructions.whitelist %></li>
+                    <li><code>bedit_deny</code>: <%= howToUse.instructions.blacklist %></li>
+                </ul>
+                <h4><%= howToUse.instructions.step2 %></h4>
                 <p><%= howToUse.instructions.ugvkInclusion %></p>
                 <div class="highlight highlight-HTML">
                     <pre dir="ltr">
