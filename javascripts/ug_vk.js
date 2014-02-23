@@ -1,14 +1,13 @@
-/*
-    ug_vk.js (https://github.com/finalfantasia/ug_vk)
-    The MIT License (MIT)
-    Copyright (c) 2013, 2014 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
-*/
+// ug_vk.js (https://github.com/finalfantasia/ug_vk)
+// The MIT License (MIT)
+// Copyright (c) 2013, 2014 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
+
 (function (window) {
     'use strict';
 
     var document = window.document,
-        ARABIC_START = 0x0600, // Starting point of Unicode Arabic range
-        ARABIC_END = 0x06FF,   // Ending point of Unicode Arabic range
+        ARABIC_START = 0x0600, // Starting code point of Unicode Arabic range
+        ARABIC_END = 0x06FF,   // Ending code point of Unicode Arabic range
         KEY_CHAR_MAP,
         UYGHUR_VOWELS,
         ARABIC_PUNCTUATION_MARKS,
@@ -258,7 +257,7 @@
             }
         }
 
-        function onTouchEnd(event) {
+        function onTouchEnd() {
             var distance = Math.abs(dx);
 
             cancelTouch();
@@ -281,9 +280,8 @@
         addEventListener(target, 'touchstart', onTouchStart);
     }
 
-    function keydownListener(e) {
-        var event = e || window.event,
-            keyCode = 'which' in event ? event.which : event.keyCode,
+    function keydownListener(event) {
+        var keyCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(keyCode).toUpperCase(),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
@@ -302,9 +300,8 @@
         }
     }
 
-    function keypressListener(e) {
-        var event = e || window.event,
-            target = 'target' in event ? event.target : event.srcElement,
+    function keypressListener(event) {
+        var target = 'target' in event ? event.target : event.srcElement,
             keyCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(keyCode),
             isAlphabetic = /^[A-Za-z]{1}$/.test(c),
@@ -566,3 +563,4 @@
 
     onDomReady(load);
 }) (window);
+
