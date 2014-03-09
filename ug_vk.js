@@ -13,8 +13,9 @@
         HAMZA,
         CTRL_KEY_LISTENERS,
         keyboardMode = {}, // 'en' or 'ug'
+        keyboardModeChangeListeners = [],
         initialized = false,
-        keyboardModeChangeListeners = [];
+        options;
 
     function isFunction(object) {
         return (typeof object === 'function');
@@ -189,7 +190,9 @@
                 previousScrollLeft = target.scrollLeft;
             }
 
-            ch = prependHamzaConditionally(target, ch);
+            if (options.smartHamza) {
+                ch = prependHamzaConditionally(target, ch);
+            }
 
             target.value = target.value.slice(0, target.selectionStart) +
                 ch + target.value.slice(target.selectionEnd);
@@ -357,16 +360,16 @@
         return all;
     }
 
-    function addEventListeners(opts) {
+    function addEventListeners() {
         var all, target, i;
 
         all = getAllInputBoxes();
 
-        if (opts.all) {
+        if (options.all) {
             for (i = 0; i < all.length; i++) {
                 target = all[i];
 
-                if (indexOf(opts.blacklist, target.name) < 0) {
+                if (indexOf(options.blacklist, target.name) < 0) {
                     addEventListener(target, 'keydown', keydownListener);
                     addEventListener(target, 'keypress', keypressListener);
                     addSwipeListener(target, switchKeyboardMode);
@@ -378,7 +381,7 @@
             for (i = 0; i < all.length; i++) {
                 target = all[i];
 
-                if (indexOf(opts.whitelist, target.name) >= 0) {
+                if (indexOf(options.whitelist, target.name) >= 0) {
                     addEventListener(target, 'keydown', keydownListener);
                     addEventListener(target, 'keypress', keypressListener);
                     addSwipeListener(target, switchKeyboardMode);
@@ -402,32 +405,39 @@
         }
     }
 
-    function preprocessBeditJSOptions(opts) {
+    function preprocessBeditJSOptions(legacyOpts) {
         var NAME_DELIMITER = ':',
-            whitelist = opts.whitelist || '',
-            blacklist = opts.blacklist || '',
-            options = {};
+            opts = {};
 
-        options.all = !! opts.all;
+        legacyOpts.bedit_allow = legacyOpts.bedit_allow || '';
+        legacyOpts.bedit_deny = legacyOpts.bedit_deny || '';
 
-        if (options.all) {
-            if (blacklist.length) {
-                options.blacklist = blacklist.split(NAME_DELIMITER);
+        opts.all = !!legacyOpts.attachAll;
+        opts.smartHamza = false;
+
+        if (opts.all) {
+            if (legacyOpts.bedit_deny.length) {
+                opts.blacklist = legacyOpts.bedit_deny.split(NAME_DELIMITER);
             }
         } else {
-            if (whitelist.length) {
-                options.whitelist = whitelist.split(NAME_DELIMITER);
+            if (legacyOpts.bedit_allow.length) {
+                opts.whitelist = legacyOpts.bedit_allow.split(NAME_DELIMITER);
             }
         }
 
-        return options;
+        return opts;
     }
 
     function checkOptions(opts) {
         var proceed;
 
-        if (!! opts.all) {
-            if (opts.blacklist) {
+        // smartHamza is enabled by default.
+        opts.smartHamza = !('smartHamza' in opts) || !!opts.smartHamza;
+
+        opts.all = !!opts.all;
+
+        if (opts.all) {
+            if ('blacklist' in opts) {
                 proceed = isArray(opts.blacklist);
             } else {
                 proceed = true;
@@ -450,43 +460,38 @@
             initialOptions = window.UG_VK_OPTS;
         } else { // Backward-compatibility with bedit.js
             initialOptions = preprocessBeditJSOptions({
-                all: window.attachAll,
-                whitelist: window.bedit_allow,
-                blacklist: window.bedit_deny
+                attachAll: window.attachAll,
+                bedit_allow: window.bedit_allow,
+                bedit_deny: window.bedit_deny
             });
         }
 
         if (checkOptions(initialOptions)) {
-            initialize();
+            options = initialOptions;
 
-            addEventListeners(initialOptions);
+            initialize();
+            addEventListeners();
         }
 
         // API
         window.UG_VK = {
             addInputEventListeners: function (overrides) {
-                var options;
-
                 if (overrides) {
                     options = {
-                        all: 'all' in overrides ? !! overrides.all : initialOptions.all,
+                        all: 'all' in overrides ? !!overrides.all : options.all,
                         whitelist: isArray(overrides.whitelist) ?
-                                overrides.whitelist : initialOptions.whitelist,
+                                overrides.whitelist : options.whitelist,
                         blacklist: isArray(overrides.blacklist) ?
-                                overrides.blacklist : initialOptions.blacklist
+                                overrides.blacklist : options.blacklist
                     };
-                } else {
-                    options = initialOptions;
                 }
 
-                if (checkOptions(options)) {
-                    if (!initialized) {
-                        initialize();
-                    }
-
-                    removeEventListeners();
-                    addEventListeners(options);
+                if (!initialized) {
+                    initialize();
                 }
+
+                removeEventListeners();
+                addEventListeners();
             },
             addKeyboardModeChangeListener: function (listener) {
                 if (!initialized) {
