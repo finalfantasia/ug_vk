@@ -62,7 +62,7 @@
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
                 <span class="nx">all</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'password'</span><span class="o">,</span> <span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
+                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
             <span class="o">}</span><span class="p">;</span>
     <span class="nt">&lt;/script&gt;</span>
 ...
@@ -78,7 +78,8 @@
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
                 <span class="nx">all</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-                <span class="nx">whitelist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'name'</span><span class="o">,</span> <span class="s1">'comment'</span><span class="o">,</span> <span class="s1">'post'</span><span class="o">]</span>
+                <span class="nx">whitelist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'name'</span><span class="o">,</span> <span class="s1">'comment'</span><span class="o">,</span> <span class="s1">'post'</span><span class="o">]</span><span class="p">,</span>
+                <span class="nx">smartHamza</span><span class="o">:</span> <span class="kc">false</span>
             <span class="o">}</span><span class="p">;</span>
     <span class="nt">&lt;/script&gt;</span>
 ...
@@ -92,6 +93,7 @@
                     <li><code>all</code>: <%= howToUse.instructions.all %></li>
                     <li><code>whitelist</code>: <%= howToUse.instructions.whitelist %></li>
                     <li><code>blacklist</code>: <%= howToUse.instructions.blacklist %></li>
+                    <li><code>smartHamza</code>: <%= howToUse.instructions.smartHamza %></li>
                 </ul>
                 <h4><%= howToUse.instructions.step2 %></h4>
                 <p><%= howToUse.instructions.ugvkInclusion %></p>
@@ -103,7 +105,7 @@
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="kd">var</span> <span class="nx">UG_VK_OPTS</span> <span class="o">= {</span>
                 <span class="nx">all</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'password'</span><span class="o">,</span> <span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
+                <span class="nx">blacklist</span><span class="o">:</span> <span class="o">[</span><span class="s1">'url'</span><span class="o">,</span> <span class="s1">'email'</span><span class="o">]</span>
             <span class="o">}</span><span class="p">;</span>
     <span class="nt">&lt;/script&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//www.beket.com/js/ug_vk.min.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
@@ -127,7 +129,7 @@
         <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
         <span class="c1"><%= howToUse.instructions.legacy.separateUsingColon %></span>
-        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'url:email'</span><span class="p">;</span>
 
         <span class="c1"><%= howToUse.instructions.legacy.separateUsingColon %></span>
         <span class="c1">// var bedit_allow = 'name:comment:post'; </span>
@@ -153,7 +155,7 @@
 ...
     <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="kd">var</span> <span class="nx">attachAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'password:url:email'</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">bedit_deny</span> <span class="o">=</span> <span class="s1">'url:email'</span><span class="p">;</span>
     <span class="nt">&lt;/script&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//www.beket.com/js/ug_vk.min.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
 ...
