@@ -1,7 +1,6 @@
 // ug_vk.js (https://github.com/finalfantasia/ug_vk)
 // The MIT License (MIT)
 // Copyright (c) 2013, 2014 Abdussalam Abdurrahman (abdusalam.abdurahman@gmail.com)
-
 (function (window) {
     'use strict';
 
@@ -434,7 +433,7 @@
                 proceed = true;
             }
         } else {
-            proceed = (isArray(opts.whitelist));
+            proceed = isArray(opts.whitelist);
         }
 
         return proceed;
