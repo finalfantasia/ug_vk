@@ -439,6 +439,7 @@
             if ('blacklist' in opts) {
                 proceed = isArray(opts.blacklist);
             } else {
+                opts.blacklist = [];
                 proceed = true;
             }
         } else {
