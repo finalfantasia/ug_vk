@@ -181,7 +181,7 @@
 
         if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
             document.selection.createRange().text = ch;
-        } else { // W3C
+        } else {
             previousSelectionStart = target.selectionStart;
 
             // Gecko scrolls up to top in textarea after insertion.
@@ -208,19 +208,19 @@
     }
 
     function addEventListener(target, event, listener) {
-        if ('addEventListener' in target) { // W3C
+        if ('addEventListener' in target) {
             target.removeEventListener(event, listener, false);
             target.addEventListener(event, listener, false);
-        } else { // Trident 4.0-
+        } else {
             target.detachEvent('on' + event, listener);
             target.attachEvent('on' + event, listener);
         }
     }
 
     function removeEventListener(target, event, listener) {
-        if ('removeEventListener' in target) { // W3C
+        if ('removeEventListener' in target) {
             target.removeEventListener(event, listener, false);
-        } else { // Trident 4.0-
+        } else {
             target.detachEvent('on' + event, listener);
         }
     }
@@ -318,7 +318,7 @@
             if (c in KEY_CHAR_MAP) {
                 if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
                     event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
-                } else { // W3C
+                } else {
                     insert(target, KEY_CHAR_MAP[c]);
                 }
                 preventDefaultAndStopPropagation = true;
@@ -329,10 +329,10 @@
         }
 
         if (preventDefaultAndStopPropagation) {
-            if ('preventDefault' in event) { // W3C
+            if ('preventDefault' in event) {
                 event.preventDefault();
                 event.stopPropagation();
-            } else { // Trident 4.0-
+            } else {
                 event.cancelBubble = true;
             }
         }
@@ -405,23 +405,22 @@
         }
     }
 
-    function preprocessBeditJSOptions(legacyOpts) {
-        var NAME_DELIMITER = ':',
-            opts = {};
+    function preprocessBeditJSOptions() {
+        var opts = {};
 
-        legacyOpts.bedit_allow = legacyOpts.bedit_allow || '';
-        legacyOpts.bedit_deny = legacyOpts.bedit_deny || '';
-
-        opts.all = !!legacyOpts.attachAll;
-        opts.smartHamza = false;
+        opts.all = !!window.attachAll;
 
         if (opts.all) {
-            if (legacyOpts.bedit_deny.length) {
-                opts.blacklist = legacyOpts.bedit_deny.split(NAME_DELIMITER);
+            if ((typeof window.bedit_deny === 'string') && window.bedit_deny.length > 0) {
+                opts.blacklist = window.bedit_deny.split(':');
+            } else {
+                opts.blacklist = [];
             }
         } else {
-            if (legacyOpts.bedit_allow.length) {
-                opts.whitelist = legacyOpts.bedit_allow.split(NAME_DELIMITER);
+            if ((typeof window.bedit_allow === 'string') && window.bedit_allow.length > 0) {
+                opts.whitelist = window.bedit_allow.split(':');
+            } else {
+                opts.whitelist = [];
             }
         }
 
@@ -443,7 +442,7 @@
                 proceed = true;
             }
         } else {
-            proceed = isArray(opts.whitelist);
+            proceed = (isArray(opts.whitelist) && opts.whitelist.length > 0);
         }
 
         return proceed;
@@ -459,11 +458,7 @@
         if (typeof (window.UG_VK_OPTS) === 'object') {
             initialOptions = window.UG_VK_OPTS;
         } else { // Backward-compatibility with bedit.js
-            initialOptions = preprocessBeditJSOptions({
-                attachAll: window.attachAll,
-                bedit_allow: window.bedit_allow,
-                bedit_deny: window.bedit_deny
-            });
+            initialOptions = preprocessBeditJSOptions();
         }
 
         if (checkOptions(initialOptions)) {
@@ -482,7 +477,9 @@
                         whitelist: isArray(overrides.whitelist) ?
                                 overrides.whitelist : options.whitelist,
                         blacklist: isArray(overrides.blacklist) ?
-                                overrides.blacklist : options.blacklist
+                                overrides.blacklist : options.blacklist,
+                        smartHamza: 'smartHamza' in overrides ?
+                                !!overrides.smartHamza : options.smartHamza
                     };
                 }
 
@@ -517,7 +514,7 @@
         }
 
         function domReadyListener() {
-            if ('removeEventListener' in document) { // W3C
+            if ('removeEventListener' in document) {
                 document.removeEventListener('DOMContentLoaded', domReadyListener, false);
             }
 
@@ -553,10 +550,10 @@
             }
             isDomReadyListenerAdded = true;
 
-            if ('addEventListener' in document) {   // W3C
+            if ('addEventListener' in document) {
                 document.addEventListener('DOMContentLoaded', domReadyListener, false);
                 window.addEventListener('load', domReadyListener, false); // Fallback.
-            } else { // Trident 4.0-
+            } else {
                 document.attachEvent('onload', domReadyListener); // Fallback.
                 ieScrollCheck();
             }
