@@ -299,7 +299,8 @@
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                         event.metaKey, // [Command] on Mac
-            preventDefaultAndStopPropagation = false;
+            isEventHandled = false,
+            inputEvent;
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
@@ -310,20 +311,28 @@
                 } else {
                     insert(target, KEY_CHAR_MAP[c]);
                 }
-                preventDefaultAndStopPropagation = true;
+
+                isEventHandled = true;
             } else if (isAlphabetic) {
+                // ignore any unmapped English letter (mostly capitals) in the Uyghur input mode.
+                isEventHandled = true;
                 event.returnValue = false;
-                preventDefaultAndStopPropagation = true;
             }
         }
 
-        if (preventDefaultAndStopPropagation) {
+        if (isEventHandled) {
             if ('preventDefault' in event) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
                 event.cancelBubble = true;
             }
+
+            // manually fire the 'input' event to notify its listeners that
+            // the value of the target has changed.
+            inputEvent = new window.Event('input', {bubbles: true});
+
+            target.dispatchEvent(inputEvent);
         }
     }
 
