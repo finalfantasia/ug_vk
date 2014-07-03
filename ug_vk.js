@@ -174,36 +174,25 @@
     }
 
     function insert(target, ch) {
-        var previousSelectionStart,
-            currentSelectionStart,
-            previousScrollTop,
-            previousScrollLeft;
+        var currentSelectionStart,
+            newSelectionStart;
 
         if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
             document.selection.createRange().text = ch;
         } else {
-            previousSelectionStart = target.selectionStart;
-
-            // Gecko scrolls up to top in textarea after insertion.
-            if (target.type === 'textarea' && target.scrollTop) {
-                previousScrollTop = target.scrollTop;
-                previousScrollLeft = target.scrollLeft;
-            }
-
             if (options.smartHamza) {
                 ch = prependHamzaConditionally(target, ch);
             }
 
-            target.value = target.value.slice(0, target.selectionStart) +
-                ch + target.value.slice(target.selectionEnd);
+            currentSelectionStart = target.selectionStart;
 
-            if (previousScrollTop) {
-                target.scrollTop = previousScrollTop;
-                target.scrollLeft = previousScrollLeft;
-            }
+            // insert.
+            target.value = target.value.slice(0, target.selectionStart) + ch +
+                target.value.slice(target.selectionEnd);
 
-            currentSelectionStart = previousSelectionStart + ch.length;
-            target.setSelectionRange(currentSelectionStart, currentSelectionStart);
+            // adjust the caret position.
+            newSelectionStart = currentSelectionStart + ch.length;
+            target.setSelectionRange(newSelectionStart, newSelectionStart);
         }
     }
 
