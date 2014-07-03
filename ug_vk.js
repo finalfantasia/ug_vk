@@ -122,9 +122,8 @@
         initialized = true;
     }
 
-    function switchKeyboardMode(event) {
-        var target = event.srcElement || event.target,
-            i;
+    function switchKeyboardMode(target) {
+        var i;
 
         keyboardMode[target.name] = (keyboardMode[target.name] === 'ug' ? 'en' : 'ug');
 
@@ -136,9 +135,7 @@
         }
     }
 
-    function switchWritingDirection(event) {
-        var target = event.srcElement || event.target;
-
+    function switchWritingDirection(target) {
         target.dir = (target.dir === 'ltr' ? 'rtl' : 'ltr');
     }
 
@@ -272,14 +269,15 @@
     }
 
     function keydownListener(event) {
-        var keyCode = 'which' in event ? event.which : event.keyCode,
+        var target = event.target || event.srcElement,
+            keyCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(keyCode).toUpperCase(),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                         event.metaKey; // [Command] on Mac
 
         if (ctrlKey && c in CTRL_KEY_LISTENERS) {
-            CTRL_KEY_LISTENERS[c](event);
+            CTRL_KEY_LISTENERS[c](target);
 
             if ('preventDefault' in event) {
                 event.preventDefault();
