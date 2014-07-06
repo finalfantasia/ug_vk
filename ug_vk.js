@@ -15,7 +15,99 @@
         keyboardMode = {}, // 'en' or 'ug'
         keyboardModeChangeListeners = [],
         initialized = false,
-        options;
+        options,
+        UgKeyCharMap = (function () {
+
+            function initialize() {
+                KEY_CHAR_MAP = {
+                    a: 'ھ',
+                    b: 'ب',
+                    c: 'غ',
+                    D: 'ژ',
+                    d: 'د',
+                    e: 'ې',
+                    F: 'ف',
+                    f: 'ا',
+                    G: 'گ',
+                    g: 'ە',
+                    H: 'خ',
+                    h: 'ى',
+                    i: 'ڭ',
+                    J: 'ج',
+                    j: 'ق',
+                    K: 'ۆ',
+                    k: 'ك',
+                    l: 'ل',
+                    m: 'م',
+                    n: 'ن',
+                    o: 'و',
+                    p: 'پ',
+                    q: 'چ',
+                    r: 'ر',
+                    s: 'س',
+                    t: 'ت',
+                    u: 'ۇ',
+                    v: 'ۈ',
+                    w: 'ۋ',
+                    x: 'ش',
+                    y: 'ي',
+                    z: 'ز',
+                    '/': 'ئ',
+
+                    // Arabic punctuation marks
+                    ';': '؛',
+                    '?': '؟',
+                    ',': '،',
+                    '_': '—',
+
+                    // Invert parentheses, square brackets, and curly braces for RTL layout.
+                    '(': ')',
+                    ')': '(',
+                    '[': ']',
+                    ']': '[',
+                    '{': '»',
+                    '}': '«',
+                    '<': '›',
+                    '>': '‹'
+                };
+
+                UYGHUR_VOWELS = [
+                    KEY_CHAR_MAP.f,
+                    KEY_CHAR_MAP.g,
+                    KEY_CHAR_MAP.e,
+                    KEY_CHAR_MAP.h,
+                    KEY_CHAR_MAP.o,
+                    KEY_CHAR_MAP.u,
+                    KEY_CHAR_MAP.K,
+                    KEY_CHAR_MAP.v
+                ];
+
+                HAMZA = KEY_CHAR_MAP['/'];
+
+                ARABIC_PUNCTUATION_MARKS = [
+                    KEY_CHAR_MAP[';'],
+                    KEY_CHAR_MAP['?'],
+                    KEY_CHAR_MAP[',']
+                ];
+            }
+
+            function getUgChar(c) {
+                return KEY_CHAR_MAP[c];
+            }
+
+            var ARABIC_START = 0x0600, // Starting code point of Unicode Arabic range
+                ARABIC_END = 0x06FF,   // Ending code point of Unicode Arabic range
+                KEY_CHAR_MAP,
+                UYGHUR_VOWELS,
+                ARABIC_PUNCTUATION_MARKS,
+                HAMZA;
+
+            return {
+                initialize: initialize,
+                getUgChar: getUgChar
+            };
+
+        } ());
 
     function isFunction(object) {
         return (typeof object === 'function');
@@ -38,76 +130,7 @@
     }
 
     function initialize() {
-        KEY_CHAR_MAP = {
-            a: 'ھ',
-            b: 'ب',
-            c: 'غ',
-            D: 'ژ',
-            d: 'د',
-            e: 'ې',
-            F: 'ف',
-            f: 'ا',
-            G: 'گ',
-            g: 'ە',
-            H: 'خ',
-            h: 'ى',
-            i: 'ڭ',
-            J: 'ج',
-            j: 'ق',
-            K: 'ۆ',
-            k: 'ك',
-            l: 'ل',
-            m: 'م',
-            n: 'ن',
-            o: 'و',
-            p: 'پ',
-            q: 'چ',
-            r: 'ر',
-            s: 'س',
-            t: 'ت',
-            u: 'ۇ',
-            v: 'ۈ',
-            w: 'ۋ',
-            x: 'ش',
-            y: 'ي',
-            z: 'ز',
-            '/': 'ئ',
-
-            // Arabic punctuation marks
-            ';': '؛',
-            '?': '؟',
-            ',': '،',
-            '_': '—',
-
-            // Invert parentheses, square brackets, and curly braces for RTL layout.
-            '(': ')',
-            ')': '(',
-            '[': ']',
-            ']': '[',
-            '{': '»',
-            '}': '«',
-            '<': '›',
-            '>': '‹'
-        };
-
-        UYGHUR_VOWELS = [
-            KEY_CHAR_MAP.f,
-            KEY_CHAR_MAP.g,
-            KEY_CHAR_MAP.e,
-            KEY_CHAR_MAP.h,
-            KEY_CHAR_MAP.o,
-            KEY_CHAR_MAP.u,
-            KEY_CHAR_MAP.K,
-            KEY_CHAR_MAP.v
-        ];
-
-        HAMZA = KEY_CHAR_MAP['/'];
-
-        ARABIC_PUNCTUATION_MARKS = [
-            KEY_CHAR_MAP[';'],
-            KEY_CHAR_MAP['?'],
-            KEY_CHAR_MAP[',']
-        ];
+        UgKeyCharMap.initialize();
 
         CTRL_KEY_LISTENERS = {};
 
@@ -298,16 +321,18 @@
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                         event.metaKey, // [Command] on Mac
             isEventHandled = false,
-            inputEvent;
+            ugChar;
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
         if (!ctrlKey && keyboardMode[target.name] === 'ug') {
-            if (c in KEY_CHAR_MAP) {
+            ugChar = UgKeyCharMap.getUgChar(c);
+
+            if (ugChar) {
                 if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
-                    event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
+                    event.keyCode = ugChar.charCodeAt(0);
                 } else {
-                    insert(target, KEY_CHAR_MAP[c]);
+                    insert(target, ugChar);
                 }
 
                 isEventHandled = true;
@@ -328,9 +353,7 @@
 
             // manually fire the 'input' event to notify its listeners that
             // the value of the target has changed.
-            inputEvent = new window.Event('input', {bubbles: true});
-
-            target.dispatchEvent(inputEvent);
+            target.dispatchEvent(new window.Event('input', {bubbles: true}));
         }
     }
 
