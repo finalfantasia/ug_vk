@@ -24,7 +24,7 @@
         return -1;
     }
 
-    function getAllInputBoxes() {
+    function findAllTextInputs() {
         var inputs,
             textAreas,
             all = [],
@@ -34,7 +34,7 @@
         textAreas = document.getElementsByTagName('textarea');
 
         for (i = 0; i < inputs.length; i++) {
-            if (inputs[i].type.toLowerCase() === 'text') {
+            if (indexOf(['text', 'search'], inputs[i].type.toLowerCase()) >= 0) {
                 all.push(inputs[i]);
             }
         }
@@ -67,7 +67,7 @@
     function addEventListeners() {
         var all, target, i;
 
-        all = getAllInputBoxes();
+        all = findAllTextInputs();
 
         if (options.all) {
             for (i = 0; i < all.length; i++) {
@@ -99,7 +99,7 @@
     function removeEventListeners() {
         var all, target, i;
 
-        all = getAllInputBoxes();
+        all = findAllTextInputs();
 
         for (i = 0; i < all.length; i++) {
             target = all[i];
