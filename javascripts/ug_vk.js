@@ -4,19 +4,6 @@
 (function (window) {
     'use strict';
 
-    var document = window.document,
-        ARABIC_START = 0x0600, // Starting code point of Unicode Arabic range
-        ARABIC_END = 0x06FF,   // Ending code point of Unicode Arabic range
-        KEY_CHAR_MAP,
-        UYGHUR_VOWELS,
-        ARABIC_PUNCTUATION_MARKS,
-        HAMZA,
-        CTRL_KEY_LISTENERS,
-        keyboardMode = {}, // 'en' or 'ug'
-        keyboardModeChangeListeners = [],
-        initialized = false,
-        options;
-
     function isFunction(object) {
         return (typeof object === 'function');
     }
@@ -37,174 +24,26 @@
         return -1;
     }
 
-    function initialize() {
-        KEY_CHAR_MAP = {
-            a: 'ھ',
-            b: 'ب',
-            c: 'غ',
-            D: 'ژ',
-            d: 'د',
-            e: 'ې',
-            F: 'ف',
-            f: 'ا',
-            G: 'گ',
-            g: 'ە',
-            H: 'خ',
-            h: 'ى',
-            i: 'ڭ',
-            J: 'ج',
-            j: 'ق',
-            K: 'ۆ',
-            k: 'ك',
-            l: 'ل',
-            m: 'م',
-            n: 'ن',
-            o: 'و',
-            p: 'پ',
-            q: 'چ',
-            r: 'ر',
-            s: 'س',
-            t: 'ت',
-            u: 'ۇ',
-            v: 'ۈ',
-            w: 'ۋ',
-            x: 'ش',
-            y: 'ي',
-            z: 'ز',
-            '/': 'ئ',
-
-            // Arabic punctuation marks
-            ';': '؛',
-            '?': '؟',
-            ',': '،',
-            '_': '—',
-
-            // Invert parentheses, square brackets, and curly braces for RTL layout.
-            '(': ')',
-            ')': '(',
-            '[': ']',
-            ']': '[',
-            '{': '»',
-            '}': '«',
-            '<': '›',
-            '>': '‹'
-        };
-
-        UYGHUR_VOWELS = [
-            KEY_CHAR_MAP.f,
-            KEY_CHAR_MAP.g,
-            KEY_CHAR_MAP.e,
-            KEY_CHAR_MAP.h,
-            KEY_CHAR_MAP.o,
-            KEY_CHAR_MAP.u,
-            KEY_CHAR_MAP.K,
-            KEY_CHAR_MAP.v
-        ];
-
-        HAMZA = KEY_CHAR_MAP['/'];
-
-        ARABIC_PUNCTUATION_MARKS = [
-            KEY_CHAR_MAP[';'],
-            KEY_CHAR_MAP['?'],
-            KEY_CHAR_MAP[',']
-        ];
-
-        CTRL_KEY_LISTENERS = {};
-
-        // Backward-compatibility
-        CTRL_KEY_LISTENERS.K = switchKeyboardMode;
-        CTRL_KEY_LISTENERS.T = switchWritingDirection;
-        // [Ctrl-T] can no longer be used for switching the writing direction in WebKit (Blink), see:
-        //   https://code.google.com/p/chromium/issues/detail?id=33056
-        // Therefore, use [Ctrl-Y] ('Y' as in the Uyghur word 'Yönilish')
-        CTRL_KEY_LISTENERS.Y = switchWritingDirection;
-
-        initialized = true;
-    }
-
-    function switchKeyboardMode(event) {
-        var target = event.srcElement || event.target,
+    function findAllTextInputs() {
+        var inputs,
+            textAreas,
+            all = [],
             i;
 
-        keyboardMode[target.name] = (keyboardMode[target.name] === 'ug' ? 'en' : 'ug');
+        inputs = document.getElementsByTagName('input');
+        textAreas = document.getElementsByTagName('textarea');
 
-        for (i = 0; i < keyboardModeChangeListeners.length; i++) {
-            keyboardModeChangeListeners[i]({
-                target: target,
-                keyboardMode: keyboardMode[target.name]
-            });
-        }
-    }
-
-    function switchWritingDirection(event) {
-        var target = event.srcElement || event.target;
-
-        target.dir = (target.dir === 'ltr' ? 'rtl' : 'ltr');
-    }
-
-    function isArabicLetter(ch) {
-        var unicode = ch.charCodeAt(0);
-
-        return (unicode >= ARABIC_START && unicode < ARABIC_END) &&
-                indexOf(ARABIC_PUNCTUATION_MARKS, ch) < 0;
-    }
-
-    function isUyghurVowel(ch) {
-        return isArabicLetter(ch) && indexOf(UYGHUR_VOWELS, ch) >= 0;
-    }
-
-    function prependHamzaConditionally(target, ch) {
-        var result = ch,
-            start = target.selectionStart,
-            previousChar;
-
-        if (isUyghurVowel(ch)) {
-            if (start === 0) { // cursor is at the begginning of the input area
-                result = HAMZA + ch;
-            } else {
-                previousChar = target.value[start - 1];
-
-                if (!isArabicLetter(previousChar) || isUyghurVowel(previousChar)) {
-                    result = HAMZA + ch;
-                }
+        for (i = 0; i < inputs.length; i++) {
+            if (indexOf(['text', 'search'], inputs[i].type.toLowerCase()) >= 0) {
+                all.push(inputs[i]);
             }
         }
 
-        return result;
-    }
-
-    function insert(target, ch) {
-        var previousSelectionStart,
-            currentSelectionStart,
-            previousScrollTop,
-            previousScrollLeft;
-
-        if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
-            document.selection.createRange().text = ch;
-        } else {
-            previousSelectionStart = target.selectionStart;
-
-            // Gecko scrolls up to top in textarea after insertion.
-            if (target.type === 'textarea' && target.scrollTop) {
-                previousScrollTop = target.scrollTop;
-                previousScrollLeft = target.scrollLeft;
-            }
-
-            if (options.smartHamza) {
-                ch = prependHamzaConditionally(target, ch);
-            }
-
-            target.value = target.value.slice(0, target.selectionStart) +
-                ch + target.value.slice(target.selectionEnd);
-
-            if (previousScrollTop) {
-                target.scrollTop = previousScrollTop;
-                target.scrollLeft = previousScrollLeft;
-            }
-
-            currentSelectionStart = previousSelectionStart + ch.length;
-            target.setSelectionRange(currentSelectionStart, currentSelectionStart);
+        for (i = 0; i < textAreas.length; i++) {
+            all.push(textAreas[i]);
         }
+
+        return all;
     }
 
     function addEventListener(target, event, listener) {
@@ -225,14 +64,59 @@
         }
     }
 
-    function addSwipeListener(target, listener) {
+    function addEventListeners() {
+        var all, target, i;
+
+        all = findAllTextInputs();
+
+        if (options.all) {
+            for (i = 0; i < all.length; i++) {
+                target = all[i];
+
+                if (indexOf(options.blacklist, target.name) < 0) {
+                    addEventListener(target, 'keydown', keydownListener);
+                    addEventListener(target, 'keypress', keypressListener);
+                    addSwipeListeners(target, switchKeyboardMode);
+
+                    keyboardMode[target.name] = 'ug';
+                }
+            }
+        } else {
+            for (i = 0; i < all.length; i++) {
+                target = all[i];
+
+                if (indexOf(options.whitelist, target.name) >= 0) {
+                    addEventListener(target, 'keydown', keydownListener);
+                    addEventListener(target, 'keypress', keypressListener);
+                    addSwipeListeners(target, switchKeyboardMode);
+
+                    keyboardMode[target.name] = 'ug';
+                }
+            }
+        }
+    }
+
+    function removeEventListeners() {
+        var all, target, i;
+
+        all = findAllTextInputs();
+
+        for (i = 0; i < all.length; i++) {
+            target = all[i];
+
+            removeEventListener(target, 'keydown', keydownListener);
+            removeEventListener(target, 'keypress', keypressListener);
+        }
+    }
+
+    function addSwipeListeners(target, listener) {
         var startX, startY, dx, direction,
             X_THRESHOLD = 50,
             Y_THRESHOLD = 15;
 
         function cancelTouch() {
-            removeEventListener(target, 'touchmove', onTouchMove);
-            removeEventListener(target, 'touchend', onTouchEnd);
+            removeEventListener(target, 'touchmove', touchMoveListener);
+            removeEventListener(target, 'touchend', touchEndListener);
 
             startX = null;
             startY = null;
@@ -240,7 +124,7 @@
             direction = null;
         }
 
-        function onTouchMove(event) {
+        function touchMoveListener(event) {
             var dy;
 
             if (event.touches.length > 1) {
@@ -259,38 +143,39 @@
             }
         }
 
-        function onTouchEnd() {
+        function touchEndListener() {
             var distance = Math.abs(dx);
 
             cancelTouch();
 
             if (distance > X_THRESHOLD) {
-                listener({ target: target, direction: (dx > 0 ? 'RIGHT' : 'LEFT') });
+                listener(target);
             }
         }
 
-        function onTouchStart(event) {
+        function touchStartListener(event) {
             if (event.touches.length === 1) {
                 startX = event.touches[0].pageX;
                 startY = event.touches[0].pageY;
 
-                addEventListener(target, 'touchmove', onTouchMove);
-                addEventListener(target, 'touchend', onTouchEnd);
+                addEventListener(target, 'touchmove', touchMoveListener);
+                addEventListener(target, 'touchend', touchEndListener);
             }
         }
 
-        addEventListener(target, 'touchstart', onTouchStart);
+        addEventListener(target, 'touchstart', touchStartListener);
     }
 
     function keydownListener(event) {
-        var keyCode = 'which' in event ? event.which : event.keyCode,
+        var target = event.target || event.srcElement,
+            keyCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(keyCode).toUpperCase(),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
-                        event.metaKey; // [Command] on Mac
+                      event.metaKey;   // [Command] on Mac
 
         if (ctrlKey && c in CTRL_KEY_LISTENERS) {
-            CTRL_KEY_LISTENERS[c](event);
+            CTRL_KEY_LISTENERS[c](target);
 
             if ('preventDefault' in event) {
                 event.preventDefault();
@@ -303,105 +188,107 @@
     }
 
     function keypressListener(event) {
+        function getCharPrecedingInsertion(target) {
+            var precedingChar;
+
+            if (target.selectionStart === 0) { // caret is at the begginning of the input area.
+                precedingChar = null;
+            } else {
+                precedingChar = target.value[target.selectionStart - 1];
+            }
+
+            return precedingChar;
+        }
+
         var target = 'target' in event ? event.target : event.srcElement,
             keyCode = 'which' in event ? event.which : event.keyCode,
             c = String.fromCharCode(keyCode),
             isAlphabetic = /^[A-Za-z]{1}$/.test(c),
             // [Ctrl] on PC === [Command] on Mac;
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
-                        event.metaKey, // [Command] on Mac
-            preventDefaultAndStopPropagation = false;
+                      event.metaKey,   // [Command] on Mac
+            ugChar,
+            isEventHandled;
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
         if (!ctrlKey && keyboardMode[target.name] === 'ug') {
-            if (c in KEY_CHAR_MAP) {
-                if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
-                    event.keyCode = KEY_CHAR_MAP[c].charCodeAt(0);
+            if ('keyCode' in event && !('which' in event)) { // Trident 4.0-
+                ugChar = UgKeyCharMap.getUgChar(c);
+
+                if (ugChar) {
+                    event.keyCode = ugChar.charCodeAt(0);
+                    isEventHandled = true;
                 } else {
-                    insert(target, KEY_CHAR_MAP[c]);
+                    isEventHandled = false;
                 }
-                preventDefaultAndStopPropagation = true;
-            } else if (isAlphabetic) {
+            } else { // modern browsers
+                ugChar = UgKeyCharMap.getUgChar(c, options.smartHamza, getCharPrecedingInsertion(target));
+
+                if (ugChar) {
+                    insert(target, ugChar);
+                    isEventHandled = true;
+                } else {
+                    isEventHandled = false;
+                }
+            }
+
+            if (!isEventHandled && isAlphabetic) {
+                // ignore any unmapped English letter (mostly capitals) in the Uyghur input mode.
                 event.returnValue = false;
-                preventDefaultAndStopPropagation = true;
+                isEventHandled = true;
             }
         }
 
-        if (preventDefaultAndStopPropagation) {
+        if (isEventHandled) {
             if ('preventDefault' in event) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
                 event.cancelBubble = true;
             }
+
+            // manually fire the 'input' event to notify its listeners that
+            // the value of the target has changed.
+            target.dispatchEvent(new window.Event('input', {bubbles: true}));
         }
     }
 
-    function getAllInputBoxes() {
-        var inputs,
-            textAreas,
-            all = [],
-            i;
+    function switchKeyboardMode(target) {
+        var i;
 
-        inputs = document.getElementsByTagName('input');
-        textAreas = document.getElementsByTagName('textarea');
+        keyboardMode[target.name] = (keyboardMode[target.name] === 'ug' ? 'en' : 'ug');
 
-        for (i = 0; i < inputs.length; i++) {
-            if (inputs[i].type.toLowerCase() === 'text') {
-                all.push(inputs[i]);
-            }
+        for (i = 0; i < keyboardModeChangeListeners.length; i++) {
+            keyboardModeChangeListeners[i]({
+                target: target,
+                keyboardMode: keyboardMode[target.name]
+            });
         }
-
-        for (i = 0; i < textAreas.length; i++) {
-            all.push(textAreas[i]);
-        }
-
-        return all;
     }
 
-    function addEventListeners() {
-        var all, target, i;
+    function switchWritingDirection(target) {
+        target.dir = (target.dir === 'ltr' ? 'rtl' : 'ltr');
+    }
 
-        all = getAllInputBoxes();
+    function insert(target, ch) {
+        var currentSelectionStart,
+            newSelectionStart;
 
-        if (options.all) {
-            for (i = 0; i < all.length; i++) {
-                target = all[i];
-
-                if (indexOf(options.blacklist, target.name) < 0) {
-                    addEventListener(target, 'keydown', keydownListener);
-                    addEventListener(target, 'keypress', keypressListener);
-                    addSwipeListener(target, switchKeyboardMode);
-
-                    keyboardMode[target.name] = 'ug';
-                }
-            }
+        if ('selection' in document && 'createRange' in document.selection) { // Trident 6.0-
+            document.selection.createRange().text = ch;
         } else {
-            for (i = 0; i < all.length; i++) {
-                target = all[i];
+            // setting the value of the target changes selectionStart so keep a copy of
+            // the offset where the caret was before insertion.
+            currentSelectionStart = target.selectionStart;
 
-                if (indexOf(options.whitelist, target.name) >= 0) {
-                    addEventListener(target, 'keydown', keydownListener);
-                    addEventListener(target, 'keypress', keypressListener);
-                    addSwipeListener(target, switchKeyboardMode);
+            // insert.
+            target.value = target.value.slice(0, target.selectionStart) + ch +
+                target.value.slice(target.selectionEnd);
 
-                    keyboardMode[target.name] = 'ug';
-                }
-            }
-        }
-    }
-
-    function removeEventListeners() {
-        var all, target, i;
-
-        all = getAllInputBoxes();
-
-        for (i = 0; i < all.length; i++) {
-            target = all[i];
-
-            removeEventListener(target, 'keydown', keydownListener);
-            removeEventListener(target, 'keypress', keypressListener);
+            // adjust the caret position.
+            newSelectionStart = currentSelectionStart + ch.length;
+            target.setSelectionRange(newSelectionStart, newSelectionStart);
         }
     }
 
@@ -447,6 +334,22 @@
         }
 
         return proceed;
+    }
+
+    function initialize() {
+        UgKeyCharMap.initialize();
+
+        CTRL_KEY_LISTENERS = {};
+
+        // Backward-compatibility
+        CTRL_KEY_LISTENERS.K = switchKeyboardMode;
+        CTRL_KEY_LISTENERS.T = switchWritingDirection;
+        // [Ctrl-T] can no longer be used for switching the writing direction in WebKit (Blink), see:
+        //   https://code.google.com/p/chromium/issues/detail?id=33056
+        // Therefore, use [Ctrl-Y] ('Y' as in the Uyghur word 'Yönilish')
+        CTRL_KEY_LISTENERS.Y = switchWritingDirection;
+
+        initialized = true;
     }
 
     function load() {
@@ -562,6 +465,140 @@
 
         addDomReadyListener();
     }
+
+    var document = window.document,
+        CTRL_KEY_LISTENERS,
+        keyboardMode = {}, // 'en' or 'ug'
+        keyboardModeChangeListeners = [],
+        initialized = false,
+        options,
+        UgKeyCharMap = (function () {
+
+            function initialize() {
+                KEY_CHAR_MAP = {
+                    a: 'ھ',
+                    b: 'ب',
+                    c: 'غ',
+                    D: 'ژ',
+                    d: 'د',
+                    e: 'ې',
+                    F: 'ف',
+                    f: 'ا',
+                    G: 'گ',
+                    g: 'ە',
+                    H: 'خ',
+                    h: 'ى',
+                    i: 'ڭ',
+                    J: 'ج',
+                    j: 'ق',
+                    K: 'ۆ',
+                    k: 'ك',
+                    l: 'ل',
+                    m: 'م',
+                    n: 'ن',
+                    o: 'و',
+                    p: 'پ',
+                    q: 'چ',
+                    r: 'ر',
+                    s: 'س',
+                    t: 'ت',
+                    u: 'ۇ',
+                    v: 'ۈ',
+                    w: 'ۋ',
+                    x: 'ش',
+                    y: 'ي',
+                    z: 'ز',
+                    '/': 'ئ',
+
+                    // Arabic punctuation marks
+                    ';': '؛',
+                    '?': '؟',
+                    ',': '،',
+                    '_': '—',
+
+                    // Invert parentheses, square brackets, and curly braces for RTL layout.
+                    '(': ')',
+                    ')': '(',
+                    '[': ']',
+                    ']': '[',
+                    '{': '»',
+                    '}': '«',
+                    '<': '›',
+                    '>': '‹'
+                };
+
+                UYGHUR_VOWELS = [
+                    KEY_CHAR_MAP.f,
+                    KEY_CHAR_MAP.g,
+                    KEY_CHAR_MAP.e,
+                    KEY_CHAR_MAP.h,
+                    KEY_CHAR_MAP.o,
+                    KEY_CHAR_MAP.u,
+                    KEY_CHAR_MAP.K,
+                    KEY_CHAR_MAP.v
+                ];
+
+                HAMZA = KEY_CHAR_MAP['/'];
+
+                ARABIC_PUNCTUATION_MARKS = [
+                    KEY_CHAR_MAP[';'],
+                    KEY_CHAR_MAP['?'],
+                    KEY_CHAR_MAP[',']
+                ];
+            }
+
+            function isArabicLetter(ch) {
+                var unicode = ch.charCodeAt(0);
+
+                return (unicode >= ARABIC_START && unicode < ARABIC_END) &&
+                    indexOf(ARABIC_PUNCTUATION_MARKS, ch) < 0;
+            }
+
+            function isUyghurVowel(ch) {
+                return isArabicLetter(ch) && indexOf(UYGHUR_VOWELS, ch) >= 0;
+            }
+
+            function prependHamzaMaybe(ch, precedingChar) {
+                var result = ch;
+
+                if (isUyghurVowel(ch)) {
+                    if (!precedingChar) {
+                        result = HAMZA + ch;
+                    } else {
+                        if (!isArabicLetter(precedingChar) || isUyghurVowel(precedingChar)) {
+                            result = HAMZA + ch;
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            function getUgChar(c, isSmartHamza, precedingChar) {
+                var ugChar;
+
+                ugChar = KEY_CHAR_MAP[c];
+
+                if (ugChar && isSmartHamza) {
+                    ugChar = prependHamzaMaybe(ugChar, precedingChar);
+                }
+
+                return ugChar;
+            }
+
+            var ARABIC_START = 0x0600, // Starting code point of Unicode Arabic range
+                ARABIC_END = 0x06FF,   // Ending code point of Unicode Arabic range
+                KEY_CHAR_MAP,
+                UYGHUR_VOWELS,
+                ARABIC_PUNCTUATION_MARKS,
+                HAMZA;
+
+            return {
+                initialize: initialize,
+                getUgChar: getUgChar
+            };
+
+        } ());
 
     onDomReady(load);
 }) (window);
