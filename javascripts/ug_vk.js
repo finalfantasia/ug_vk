@@ -244,13 +244,13 @@
             if ('preventDefault' in event) {
                 event.preventDefault();
                 event.stopPropagation();
+
+                // manually fire the 'input' event to notify its listeners that
+                // the value of the target has changed.
+                target.dispatchEvent(new window.Event('input', {bubbles: true}));
             } else {
                 event.cancelBubble = true;
             }
-
-            // manually fire the 'input' event to notify its listeners that
-            // the value of the target has changed.
-            target.dispatchEvent(new window.Event('input', {bubbles: true}));
         }
     }
 
