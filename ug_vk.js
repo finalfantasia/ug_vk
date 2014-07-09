@@ -208,7 +208,7 @@
             ctrlKey = event.ctrlKey || // [Ctrl] on PC
                       event.metaKey,   // [Command] on Mac
             ugChar,
-            isEventHandled;
+            isEventHandled = false;
 
         // The extra check for [Ctrl] is because:
         //   https://bugzilla.mozilla.org/show_bug.cgi?id=501496
@@ -219,8 +219,6 @@
                 if (ugChar) {
                     event.keyCode = ugChar.charCodeAt(0);
                     isEventHandled = true;
-                } else {
-                    isEventHandled = false;
                 }
             } else { // modern browsers
                 ugChar = UgKeyCharMap.getUgChar(c, options.smartHamza, getCharPrecedingInsertion(target));
@@ -228,28 +226,32 @@
                 if (ugChar) {
                     insert(target, ugChar);
                     isEventHandled = true;
-                } else {
-                    isEventHandled = false;
                 }
             }
 
-            if (!isEventHandled && isAlphabetic) {
-                // ignore any unmapped English letter (mostly capitals) in the Uyghur input mode.
-                event.returnValue = false;
-                isEventHandled = true;
-            }
-        }
+            if (isEventHandled) {
+                if ('preventDefault' in event) {
+                    event.preventDefault();
+                    event.stopPropagation();
 
-        if (isEventHandled) {
-            if ('preventDefault' in event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                // manually fire the 'input' event to notify its listeners that
-                // the value of the target has changed.
-                target.dispatchEvent(new window.Event('input', {bubbles: true}));
+                    // manually fire the 'input' event to notify its listeners that
+                    // the value of the target has changed.
+                    target.dispatchEvent(new window.Event('input', {bubbles: true}));
+                } else {
+                    event.returnValue = true;
+                    event.cancelBubble = true;
+                }
             } else {
-                event.cancelBubble = true;
+                if (isAlphabetic) {
+                    // ignore any unmapped English letter (mostly upper-case) in the Uyghur input mode.
+                    if ('preventDefault' in event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        event.returnValue = false;
+                        event.cancelBubble = true;
+                    }
+                }
             }
         }
     }
